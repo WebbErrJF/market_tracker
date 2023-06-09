@@ -22,12 +22,13 @@ html, body {
   text-align: center;
   color: #fff; }
   .header-container .wrapper {
-    padding-top: 120px;
+    padding-top: 2%;
     z-index: 2;
     position: relative; }
   .header-container h1 {
     font-size: 80px;
   }
+
   .header-container .bcg {
     -webkit-transition: -webkit-transform 4s ease-out;
             transition: transform 4s ease-out;

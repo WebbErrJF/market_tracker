@@ -40,8 +40,8 @@
 					<rect class="animate" height="150" width="150" />
 				</svg>
       <div class="text">
-        <span class="logo">BJI</span>
-        <span class="motto">we trade stocks.</span>
+        <span class="logo">Market Tracker</span>
+        <span class="motto">we track stocks.</span>
       </div>
     </div>
   </div>
@@ -67,13 +67,16 @@
     <div class="bcg-post"></div>
     {% endif %}
     <header class="wrapper">
-      <h1 style="margin-bottom: 20px;">Login</h1>
+      <h1 style="margin-bottom: 10px;">Login</h1>
       <p>Market Tracker</p>
-      {% if form.errors %}
-          <p style="margin-top: 50px;">Username or password is wrong</p>
-      {% endif %}
+
     </header>
     <div class="form-content">
+      {% if form.errors %}
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <p style="top: 20px; position: absolute; z-index: 99999; width: 100%; text-align: center;">Username or password is wrong</p>
+        </div>
+      {% endif %}
       <form method="POST">
         {% csrf_token %}
         <div class="field">
@@ -93,7 +96,7 @@
         </div>
       </form>
       <div class="signup">Don't have account?
-        <a href="#">Signup Now</a>
+        <a href="{% url 'register' %}">Signup Now</a>
       </div>
     </div>
   </div>
