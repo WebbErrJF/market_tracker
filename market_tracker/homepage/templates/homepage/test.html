@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="{% static 'users/css/login_form.css' %}">
 </head>
 
-  <body style="overflow: hidden;">
+<body style="overflow: hidden;">
 
   {% if request.method == 'GET' %}
     <div class="loading">
@@ -53,11 +53,11 @@
   <header>
     <span id="logo">Market Tracker</span>
     <nav>
-      <a href="{% url 'homepage' %}" class="{% if title == 'Home' %}color-nav-item{% endif %}">Home</a>
-      <a href="#" class="{% if title == 'Blog' %}color-nav-item{% endif %}">Blog</a>
-      <a href="#" class="{% if title == 'About' %}color-nav-item{% endif %}">About</a>
-      <a href="{% url 'login' %}" class="{% if title == 'Login' %}color-nav-item{% endif %}">Login</a>
-      <a href="{% url 'register' %}" class="{% if title == 'Register' %}color-nav-item{% endif %}">Register</a>
+      <a href="#">Home</a>
+      <a href="#">Blog</a>
+      <a href="#">About</a>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
     </nav>
   </header>
 
@@ -70,43 +70,35 @@
     {% else %}
       <div class="landing-post">
     {% endif %}
-        <div class="logo-text">
-          <h1>Register</h1>
-          <div class="sub-text">
-            {% if form.errors %}
-              <p style="margin-bottom: 5%">Username or password is wrong</p>
-            {% else %}
-              <p>{{ form.password1.help_text }}</p>
-            {% endif %}
-          </div>
+        <div class="login-text">
+          <h1>Login</h1>
         </div>
         <div class="form-content">
+          {% if form.errors %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <p style="top: 20px; position: absolute; z-index: 99999; width: 100%; text-align: center; color: #FFFFFF;">Username or password is wrong</p>
+            </div>
+          {% endif %}
           <form method="POST">
             {% csrf_token %}
-            <div class="field space">
+            <div class="field">
               <span class="fa fa-user"></span>
-              <input type="text" required placeholder="Username" name="username">
-            </div>
-            <div class="field space">
-              <span class="fa fa-user"></span>
-              <input type="text" required placeholder="Email" name="email">
+              <input type="text" required placeholder="Login" name="username">
             </div>
             <div class="field space">
               <span class="fa fa-lock"></span>
-              <input type="password" class="pass-key" required placeholder="Password" name="password1">
+              <input type="password" class="pass-key" required placeholder="Password" name="password">
               <span class="show">SHOW</span>
             </div>
-            <div class="field space">
-              <span class="fa fa-lock"></span>
-              <input type="password" class="pass-key" required placeholder="Repeat password" name="password2">
-              <span class="show">SHOW</span>
+            <div class="pass">
+              <a href="#">Forgot Password?</a>
             </div>
-            <div class="field space">
-              <input type="submit" value="SING UP">
+            <div class="field">
+              <input type="submit" value="LOGIN">
             </div>
           </form>
-          <div class="signup">Have an account?
-            <a href="{% url 'login' %}">Sign In</a>
+          <div class="signup">Don't have account?
+            <a href="{% url 'register' %}">Signup Now</a>
           </div>
         </div>
     </div>
@@ -118,5 +110,6 @@
 
   <script  src="{% static 'homepage/js/script.js' %}"></script>
   <script  src="{% static 'users/js/script_form.js' %}"></script>
+
   </body>
 </html>
