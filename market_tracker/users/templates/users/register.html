@@ -1,4 +1,6 @@
+{% extends 'homepage/base.html' %}
 {% load static %}
+<<<<<<< Updated upstream
 {% load crispy_forms_tags %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE HTML>
@@ -61,11 +63,25 @@
     		offsetMe();
   </script>
   <div id="intro" class="header-container">
+=======
+{% block extra_script %}
+
+  <script  src="{% static 'users/js/script_form.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'users/css/login_form.css' %}">
+  <script src="{% static 'users/js/script.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="wrapper">
+>>>>>>> Stashed changes
     {% if request.method == 'GET' %}
     <div class="bcg"></div>
     {% else %}
     <div class="bcg-post"></div>
     {% endif %}
+<<<<<<< Updated upstream
     <header class="wrapper">
       <h1 style="margin-bottom: 10px;">Register</h1>
       <p>Market Tracker</p>
@@ -105,10 +121,50 @@
         </form>
       <div class="signup">Have an account?
         <a href="{% url 'login' %}">Sign In</a>
+=======
+    <div class="logo-text">
+      <h1>Register</h1>
+    </div>
+    <div class="form-content">
+      <div class="sub-text">
+        {% if form.errors %}
+          <h1 style="font-size: 20px;">Username or password is wrong</h1>
+        {% else %}
+          <p>{{ form.password1.help_text }}</p>
+        {% endif %}
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="field space">
+          <span class="fa fa-user"></span>
+          <input type="text" required placeholder="Username" name="username">
+        </div>
+        <div class="field space">
+          <span class="fa fa-user"></span>
+          <input type="text" required placeholder="Email" name="email">
+        </div>
+        <div class="field space">
+          <span class="fa fa-lock"></span>
+          <input type="password" class="pass-key" required placeholder="Password" name="password1">
+          <span class="show">SHOW</span>
+        </div>
+        <div class="field space">
+          <span class="fa fa-lock"></span>
+          <input type="password" class="pass-key" required placeholder="Repeat password" name="password2">
+          <span class="show">SHOW</span>
+        </div>
+        <div class="field space">
+          <input type="submit" value="SING UP">
+        </div>
+      </form>
+      <div class="signup">Don't have account?
+        <a href="{% url 'login' %}">Sign Up Now</a>
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>
 
+<<<<<<< Updated upstream
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script>
     window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
@@ -128,3 +184,6 @@
 </body>
 
 </html>
+=======
+{% endblock %}
+>>>>>>> Stashed changes

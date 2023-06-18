@@ -1,4 +1,6 @@
+{% extends 'homepage/base.html' %}
 {% load static %}
+<<<<<<< Updated upstream
 {% load crispy_forms_tags %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE HTML>
@@ -61,11 +63,25 @@
     		offsetMe();
   </script>
   <div id="intro" class="header-container">
+=======
+{% block extra_script %}
+
+  <script  src="{% static 'users/js/script_form.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'users/css/login_form.css' %}">
+  <script src="{% static 'users/js/script.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="wrapper">
+>>>>>>> Stashed changes
     {% if request.method == 'GET' %}
     <div class="bcg"></div>
     {% else %}
     <div class="bcg-post"></div>
     {% endif %}
+<<<<<<< Updated upstream
     <header class="wrapper">
       <h1 style="margin-bottom: 10px;">Login</h1>
       <p>Market Tracker</p>
@@ -77,11 +93,23 @@
           <p style="top: 20px; position: absolute; z-index: 99999; width: 100%; text-align: center;">Username or password is wrong</p>
         </div>
       {% endif %}
+=======
+    <div class="logo-text">
+      <h1>Login</h1>
+    </div>
+    <div class="form-content">
+      <div class="sub-text-login">
+        {% if form.errors %}
+          <h1 style="font-size: 20px;">Username or password is wrong</h1>
+        {% endif %}
+      </div>
+>>>>>>> Stashed changes
       <form method="POST">
         {% csrf_token %}
         <div class="field">
           <span class="fa fa-user"></span>
           <input type="text" required placeholder="Login" name="username">
+<<<<<<< Updated upstream
         </div>
         <div class="field space">
           <span class="fa fa-lock"></span>
@@ -97,10 +125,29 @@
       </form>
       <div class="signup">Don't have account?
         <a href="{% url 'register' %}">Signup Now</a>
+=======
+        </div>
+        <div class="field space">
+          <span class="fa fa-lock"></span>
+          <input type="password" class="pass-key" required placeholder="Password" name="password">
+          <span class="show">SHOW</span>
+        </div>
+        <div class="pass">
+          <a href="#">Forgot Password?</a>
+        </div>
+        <div class="field">
+          <input type="submit" value="LOGIN">
+        </div>
+      </form>
+      <div class="signup">Don't have account?
+        <a href="{% url 'register' %}">Sign Up Now</a>
+>>>>>>> Stashed changes
       </div>
     </div>
+      </div>
   </div>
 
+<<<<<<< Updated upstream
 
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -122,3 +169,6 @@
 </body>
 
 </html>
+=======
+{% endblock %}
+>>>>>>> Stashed changes
