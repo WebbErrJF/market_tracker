@@ -20,20 +20,22 @@
 </head>
 
 <body>
-  <!--Preloader-->
-  <div class="loading">
-    <div class="svg-wrapper">
-      <svg height="150" width="150" xmlns="http://www.w3.org/2000/svg">
-      <rect class="animate" height="150" width="150" />
-    </svg>
-      <div class="text">
-        <span class="logo">Market Tracker</span>
-        <span class="motto">we track stocks.</span>
+
+  {% if request.method == 'GET' %}
+    <div class="loading">
+      <div class="svg-wrapper">
+        <svg height="150" width="150" xmlns="http://www.w3.org/2000/svg">
+        <rect class="animate" height="150" width="150" />
+      </svg>
+        <div class="text">
+          <span class="logo">Market Tracker</span>
+          <span class="motto">we track stocks.</span>
+        </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 
-  <!--SVG animation-->
+
   <script>
     var p = document.querySelector('.animate'),
       offset = 600;
@@ -48,78 +50,20 @@
     offsetMe();
   </script>
 
-  <!--Desktop Navigation-->
-  <span class="desktop">
-    <header>
-      <span id="logo">Market Tracker</span>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">Blog</a>
-        <a href="#">About</a>
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-      </nav>
-    </header>
-  </span>
-  
-  <!--Homepage-->
-  <div class="wrapper">
-    <div class="landing"></div>
-  </div>
 
-  <!--Intro text scroll-->
-  <div class="content-1">
-    <span class="one">We Know Stocks.</span>
-    <span class="two">We Track Stocks.</span>
-    <span class="three">We are Market Tracker.</span>
-  </div>
+  <header>
+    <span id="logo">Market Tracker</span>
+    <nav>
+      <a href="{% url 'homepage' %}" class="{% if title == 'Home' %}color-nav-item{% endif %}">Home</a>
+      <a href="#" class="{% if title == 'Blog' %}color-nav-item{% endif %}">Blog</a>
+      <a href="#" class="{% if title == 'About' %}color-nav-item{% endif %}">About</a>
+      <a href="{% url 'login' %}" class="{% if title == 'Login' %}color-nav-item{% endif %}">Login</a>
+      <a href="{% url 'register' %}" class="{% if title == 'Register' %}color-nav-item{% endif %}">Register</a>
+    </nav>
+  </header>
 
-  <!--Mouse scroller-->
-  <span class="mouseScroll"></span>
-
-  <!--About section-->
-  <div class="about">
-
-    <div class="hideme">
-      <h1>Market Tracker</h1>
-    </div>
-
-    <div class="hideme">
-      <div id="mission">
-        <p>Market Tracker is a web application that provides tracking of market actions.</p>
-      </div>
-    </div>
-
-    <!--Contact box-->
-    <div class="hideme">
-      <div class="container"></div>
-      <div class="cube">
-        <div class="default-state">
-          <span>Contact  Us</span>
-        </div>
-        <div class="active-state">
-          <span>gmail</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--Sponsors section-->
-  <div class="sponsors">
-    <div class="hideme">
-      <h2></h2>
-    </div>
-  </div>
-
-  <!--Social section-->
-  <div class="social">
-    <span class="hideme">
-      <a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a>
-    </span>
-  </div>
-
-<!-- partial -->
-  <script  src="{% static 'homepage/js/script.js' %}"></script>
+  {% block content %}{% endblock %}
+  {% block extra_script %}{% endblock %}
 
 </body>
 </html>
