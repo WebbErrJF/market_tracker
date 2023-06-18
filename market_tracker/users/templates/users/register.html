@@ -1,122 +1,60 @@
+{% extends 'homepage/base.html' %}
 {% load static %}
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-  <meta charset="UTF-8">
-  {% if title %}
-    <title>Market Tracker - {{ title }}</title>
-  {%else %}
-    <title>Market Tracker</title>
-  {% endif %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-  <link href="https://fonts.googleapis.com/css?family=Raleway:400,100|Roboto+Condensed:700" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="{% static 'homepage/css/style.css' %}" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+{% block extra_script %}
+
+  <script  src="{% static 'users/js/script_form.js' %}"></script>
   <link rel="stylesheet" href="{% static 'users/css/login_form.css' %}">
-</head>
+  <script src="{% static 'users/js/script.js' %}"></script>
 
-  <body style="overflow: hidden;">
+{% endblock %}
 
-  {% if request.method == 'GET' %}
-    <div class="loading">
-      <div class="svg-wrapper">
-        <svg height="150" width="150" xmlns="http://www.w3.org/2000/svg">
-        <rect class="animate" height="150" width="150" />
-      </svg>
-        <div class="text">
-          <span class="logo">Market Tracker</span>
-          <span class="motto">we track stocks.</span>
-        </div>
-      </div>
-    </div>
-  {% endif %}
-
-  <script>
-    var p = document.querySelector('.animate'),
-      offset = 600;
-    var offsetMe = function() {
-      if (offset < 0) {
-        offset = 600;
-      }
-      p.style.strokeDashoffset = offset;
-      offset = offset - 5;
-      requestAnimationFrame(offsetMe);
-    }
-    offsetMe();
-  </script>
-
-  <header>
-    <span id="logo">Market Tracker</span>
-    <nav>
-      <a href="{% url 'homepage' %}" class="{% if title == 'Home' %}color-nav-item{% endif %}">Home</a>
-      <a href="#" class="{% if title == 'Blog' %}color-nav-item{% endif %}">Blog</a>
-      <a href="#" class="{% if title == 'About' %}color-nav-item{% endif %}">About</a>
-      <a href="{% url 'login' %}" class="{% if title == 'Login' %}color-nav-item{% endif %}">Login</a>
-      <a href="{% url 'register' %}" class="{% if title == 'Register' %}color-nav-item{% endif %}">Register</a>
-    </nav>
-  </header>
-
-
+{% block content %}
 
   <div class="wrapper">
-
     {% if request.method == 'GET' %}
       <div class="landing">
     {% else %}
       <div class="landing-post">
     {% endif %}
-        <div class="logo-text">
-          <h1>Register</h1>
-          <div class="sub-text">
-            {% if form.errors %}
-              <p style="margin-bottom: 5%">Username or password is wrong</p>
-            {% else %}
-              <p>{{ form.password1.help_text }}</p>
-            {% endif %}
-          </div>
+    <div class="logo-text">
+      <h1>Register</h1>
+    </div>
+    <div class="form-content">
+      <div class="sub-text">
+        {% if form.errors %}
+          <h1 style="font-size: 20px;">Username or password is wrong</h1>
+        {% else %}
+          <p>{{ form.password1.help_text }}</p>
+        {% endif %}
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="field space">
+          <span class="fa fa-user"></span>
+          <input type="text" required placeholder="Username" name="username">
         </div>
-        <div class="form-content">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="field space">
-              <span class="fa fa-user"></span>
-              <input type="text" required placeholder="Username" name="username">
-            </div>
-            <div class="field space">
-              <span class="fa fa-user"></span>
-              <input type="text" required placeholder="Email" name="email">
-            </div>
-            <div class="field space">
-              <span class="fa fa-lock"></span>
-              <input type="password" class="pass-key" required placeholder="Password" name="password1">
-              <span class="show">SHOW</span>
-            </div>
-            <div class="field space">
-              <span class="fa fa-lock"></span>
-              <input type="password" class="pass-key" required placeholder="Repeat password" name="password2">
-              <span class="show">SHOW</span>
-            </div>
-            <div class="field space">
-              <input type="submit" value="SING UP">
-            </div>
-          </form>
-          <div class="signup">Have an account?
-            <a href="{% url 'login' %}">Sign In</a>
-          </div>
+        <div class="field space">
+          <span class="fa fa-user"></span>
+          <input type="text" required placeholder="Email" name="email">
         </div>
+        <div class="field space">
+          <span class="fa fa-lock"></span>
+          <input type="password" class="pass-key" required placeholder="Password" name="password1">
+          <span class="show">SHOW</span>
+        </div>
+        <div class="field space">
+          <span class="fa fa-lock"></span>
+          <input type="password" class="pass-key" required placeholder="Repeat password" name="password2">
+          <span class="show">SHOW</span>
+        </div>
+        <div class="field space">
+          <input type="submit" value="SING UP">
+        </div>
+      </form>
+      <div class="signup">Don't have account?
+        <a href="{% url 'login' %}">Sign Up Now</a>
+      </div>
     </div>
   </div>
 
-    <div class="hideme">
-      <h1>Market Tracker</h1>
-    </div>
-
-  <script  src="{% static 'homepage/js/script.js' %}"></script>
-  <script  src="{% static 'users/js/script_form.js' %}"></script>
-  </body>
-</html>
+{% endblock %}

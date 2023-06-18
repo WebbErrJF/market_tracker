@@ -416,6 +416,26 @@ body.loaded {
   background: transparent;
   }
 
+.form-content .sub-text {
+  text-align: left;
+  height: 130px;
+  flex-direction: column;
+  color: #FFFFFF;
+  transform: translate(4%, -20%);
+}
+
+.form-content .sub-text-login {
+  height: 25px;
+  flex-direction: column;
+  color: #FFFFFF;
+  transform: translate(0%, -350%);
+}
+
+.form-content .sub-text h1 {
+  transform: translate(-4%, 200%);
+  text-align: center;
+}
+
 .logo-text {
   position: relative;
   top: 10%;
@@ -424,25 +444,10 @@ body.loaded {
   font-size: 15px;
 }
 
-.logo-text h1 {
+.logo-text h1{
   font-size: 40px;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
-  margin: 0;
-}
-
-.logo-text .sub-text {
-  position: relative;
-  top: 100%;
-  transform: translate(4%, 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-}
-
-.logo-text .sub-text p {
-  color: #FFFFFF;
   margin: 0;
 }
