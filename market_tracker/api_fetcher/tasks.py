@@ -15,7 +15,6 @@ async def get(
         'x-rapidapi-key': "5cf2d47ba9msh43646e2b2b9757bp12f0efjsn0e28881478e2"
     }
     resp = await session.request('GET', url=url, headers=headers, **kwargs)
-    print(f"Response status: {resp.status}")
     data = await resp.json()
     data['stock_symbol'] = stock_symbol
     data['company_name'] = company_name

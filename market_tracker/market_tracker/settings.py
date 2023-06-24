@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+    'api_fetcher.apps.ApiFetcherConfig',
     'homepage.apps.HomepageConfig',
     'crispy_bootstrap4',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [
