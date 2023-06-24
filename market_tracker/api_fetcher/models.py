@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class StockCom(models.Model):
+class StockCompany(models.Model):
     Name = models.CharField(max_length=100)
     Symbol = models.CharField(max_length=100)
 
@@ -14,4 +14,12 @@ class StockData(models.Model):
     Change_point = models.FloatField()
     Change_percentage = models.FloatField()
     Total_vol = models.TextField()
-    Stock_symbol = models.ForeignKey(StockCom, on_delete=models.CASCADE)
+    Stock_symbol = models.ForeignKey(StockCompany, on_delete=models.CASCADE)
+
+
+class StockDate(models.Model):
+    Date = models.DateTimeField()
+    Stock_data = models.ForeignKey(StockData, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.Date)

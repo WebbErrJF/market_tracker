@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from .models import StockData, StockCom
+from .models import StockData, StockCompany, StockDate
 
 admin.site.register(StockData)
-admin.site.register(StockCom)
+admin.site.register(StockCompany)
+admin.site.register(StockDate)
 # Register your models here.
 

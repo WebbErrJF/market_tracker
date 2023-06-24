@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
-from .models import StockCom, StockData
+from .models import StockCompany, StockData, StockDate
+from django.utils import timezone
 
 
 async def get(
@@ -42,7 +43,8 @@ def save_to_db(results):
         del result['company_name']
         stock_symbol = result['stock_symbol']
         del result['stock_symbol']
-        new_comp, created = StockCom.objects.get_or_create(Name=company_name, Symbol=stock_symbol)
+        new_comp, created = StockCompany.objects.get_or_create(Name=company_name, Symbol=stock_symbol)
         new_data = StockData.objects.create(Price=result['price'], Change_point=result['change_point'],
                                             Change_percentage=result['change_percentage'], Total_vol=result['total_vol'],
                                             Stock_symbol=new_comp)
+        new_date = StockDate.objects.create(Date=timezone.now(), Stock_data=new_data)
