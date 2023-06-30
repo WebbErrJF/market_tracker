@@ -33,6 +33,7 @@ async def main(stock_symbols, **kwargs):
 
 def update_stock_db():
     stock_symbols = {'Apple': 'AAPL', 'IBM': 'IBM', 'NVIDIA': 'NVDA', 'AMD': 'AMD', 'Intel': 'INTC'}
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(main(stock_symbols))
     save_to_db(results)
 
