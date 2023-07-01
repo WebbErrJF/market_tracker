@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  market_tracker_web:
+    build: .
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        python manage.py makemigrations
+        python manage.py migrate
+        python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - celery_app
+
+  redis:
+    image: redis:7.0-alpine
+
+  celery_app:
+    build: .
+    command: celery -A api_fetcher.celery_app:celery_obj worker -l info
+    depends_on:
+      - redis
