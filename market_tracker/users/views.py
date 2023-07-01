@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 from .forms import RegisterForm
 from django.views.generic import FormView
 from django.urls import reverse_lazy
@@ -13,3 +15,6 @@ class RegisterView(FormView):
 
     def get_success_url(self):
         return reverse_lazy('login')
+
+def profile(request):
+    return render(request, 'users/profile.html', {'title': 'User profile'})
