@@ -1,0 +1,321 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+{% block extra_script %}
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+
+  <script src="{% static 'users/js/script.js' %}"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css'>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js'></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var header = document.querySelector('header');
+    var background_image = document.querySelector('.landing');
+    if (header) {
+        header.style.display = 'none';
+    }
+    if (background_image) {
+        background_image.style.backgroundImage = 'none';
+    }
+    });
+  </script>
+
+  <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-stock.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-annotations.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-ui.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="{% static 'users/js/csco-daily-short.js' %}"></script>
+  <link href="https://playground.anychart.com/CbFw49P0/iframe" rel="canonical">
+  <link href="https://cdn.anychart.com/releases/8.11.1/css/anychart-ui.min.css?hcode=a0c21fc77e1449cc86299c5faa067dc4" rel="stylesheet" type="text/css">
+    <script type="text/javascript">function generateNewPoints() {
+        initialData.addData([
+            {"date": '2023-12-28', "open": 511.53, "high": 514.98, "low": 505.79, "close": 506.40},
+            {"date": '2023-12-29', "open": 512.53, "high": 514.88, "low": 505.69, "close": 507.34}
+        ]);
+      }
+      anychart.onDocumentReady(function () {
+
+        stage1 = anychart.graphics.create("container");
+        stage2 = anychart.graphics.create("container2");
+        stage3 = anychart.graphics.create("container3");
+        stage4 = anychart.graphics.create("container4");
+
+        initialData = anychart.data.table("date");
+        initialData.addData([
+            {"date": '2021-01-01', "open": 100, "high": 120, "low": 80, "close": 110.40},
+            {"date": '2021-01-02', "open": 110, "high": 130, "low": 90, "close": 110.50},
+            {"date": '2021-01-03', "open": 120, "high": 140, "low": 100, "close": 110.60},
+      ]);
+      TrendMapping1 = initialData.mapAs({value: "close"});
+      columnMapping1 = initialData.mapAs({value: "high"});
+      ohlcMapping1 = initialData.mapAs({open: "open", high: "high", low: "low", close: "close"});
+      chart1 = anychart.stock();
+      chart2 = anychart.stock();
+      chart3 = anychart.stock();
+      chart4 = anychart.stock();
+
+      var line1 = chart1.plot(0);
+      line1.area(TrendMapping1).name('Trend');
+      var line2 = chart2.plot(0);
+      line2.area(TrendMapping1).name('Trend');
+      var line3 = chart3.plot(0);
+      line3.area(TrendMapping1).name('Trend');
+      var line4 = chart4.plot(0);
+      line4.area(TrendMapping1).name('Trend');
+
+      chart1.top(25);
+      chart1.title("AnyStock Legend: Basic Sample");
+      chart2.top(25);
+      chart2.title("AnyStock Legend: Basic Sample");
+      chart3.top(25);
+      chart3.title("AnyStock Legend: Basic Sample");
+      chart4.top(25);
+      chart4.title("AnyStock Legend: Basic Sample");
+
+      var rangePicker1 = anychart.ui.rangePicker();
+      var rangeSelector1 = anychart.ui.rangeSelector();
+      var rangePicker2 = anychart.ui.rangePicker();
+      var rangeSelector2 = anychart.ui.rangeSelector();
+      var rangePicker3 = anychart.ui.rangePicker();
+      var rangeSelector3 = anychart.ui.rangeSelector();
+      var rangePicker4 = anychart.ui.rangePicker();
+      var rangeSelector4 = anychart.ui.rangeSelector();
+
+      var customRanges = [
+          {
+              'text': '5 Days',
+              'type': 'unit',
+              'unit': 'day',
+              'count': 5,
+              'anchor': 'first-visible-date'
+          },
+          {
+              'text': 'Year 2007',
+              'startDate': '2007 Jan 1',
+              'endDate': '2007 Dec 31',
+              'type': 'range'
+          },
+          {
+              'text': 'Full Range',
+              'type': 'max'
+          },
+          {
+              'text': '10',
+              'type': 'points',
+              'count': 10,
+              'anchor': 'last-date'
+          }
+      ];
+
+      rangePicker1.format('dd MM yyyy');
+      rangePicker2.format('dd MM yyyy');
+      rangePicker3.format('dd MM yyyy');
+      rangePicker4.format('dd MM yyyy');
+
+      rangeSelector1.ranges(customRanges);
+      rangeSelector1.render(chart1);
+      rangeSelector2.ranges(customRanges);
+      rangeSelector2.render(chart2);
+      rangeSelector3.ranges(customRanges);
+      rangeSelector3.render(chart3);
+      rangeSelector4.ranges(customRanges);
+      rangeSelector4.render(chart4);
+
+      chart1.container(stage1);
+      chart1.draw();
+      chart2.container(stage2);
+      chart2.draw();
+      chart3.container(stage3);
+      chart3.draw();
+      chart4.container(stage4);
+      chart4.draw();
+
+      chart1.selectRange("ytd");
+      rangePicker1.render(chart1);
+      chart2.selectRange("ytd");
+      rangePicker2.render(chart2);
+      chart3.selectRange("ytd");
+      rangePicker3.render(chart3);
+      chart4.selectRange("ytd");
+      rangePicker4.render(chart4);
+      });
+
+    function ChangeValue() {
+      var selectElement = event.target;
+      var selectIndex = selectElement.selectedIndex;
+      selectElement.options[previous].disabled = false;
+      selectElement.options[selectIndex].disabled = true;
+      previous = selectIndex;
+      initialData.addData([
+            {"date": '2021-01-01', "open": 200, "high": 220, "low": 100, "close": 210},
+            {"date": '2021-01-02', "open": 310, "high": 330, "low": 200, "close": 320},
+            {"date": '2021-01-03', "open": 420, "high": 440, "low": 300, "close": 430},
+        ]);
+        };
+
+    function ChangeChart(chart_type) {
+      chart1.plot(0).dispose();
+      chart2.plot(0).dispose();
+      chart3.plot(0).dispose();
+      chart4.plot(0).dispose();
+      var chart_var1 = chart1.plot(0);
+      var chart_var2 = chart2.plot(0);
+      var chart_var3 = chart3.plot(0);
+      var chart_var4 = chart4.plot(0);
+      switch (chart_type) {
+        case 'ohlc':
+          chart_var1.ohlc(ohlcMapping1).name('Price');
+          chart_var2.ohlc(ohlcMapping1).name('Price');
+          chart_var3.ohlc(ohlcMapping1).name('Price');
+          chart_var4.ohlc(ohlcMapping1).name('Price');
+          break;
+        case 'column':
+          chart_var1.column(columnMapping1).name('High');
+          chart_var2.column(columnMapping1).name('High');
+          chart_var3.column(columnMapping1).name('High');
+          chart_var4.column(columnMapping1).name('High');
+          break;
+        case 'line':
+          chart_var1.area(TrendMapping1).name('Trend');
+          chart_var2.area(TrendMapping1).name('Trend');
+          chart_var3.area(TrendMapping1).name('Trend');
+          chart_var4.area(TrendMapping1).name('Trend');
+          break;
+      };
+    chart1.draw();
+    chart2.draw();
+    chart3.draw();
+    chart4.draw();
+    };
+
+  </script>
+
+{% endblock %}
+
+{% block content %}
+
+<style>
+  select {
+      margin: 10px 0 0 10px;
+  }
+  button {
+      margin: 10px 0 0 5px;
+  }
+  #container {
+      width: 100%;
+      height: 100%;
+  }
+
+  #container2 {
+      width: 100%;
+      height: 100%;
+  }
+
+  #container3 {
+      width: 100%;
+      height: 100%;
+  }
+
+  #container4 {
+      width: 100%;
+      height: 100%;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: 330px repeat(2, 1fr);
+    grid-template-rows: 60px repeat(2, 1fr);
+    height: 95vh;
+  }
+  .grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px 10px;
+  }
+
+  .item1 {
+    grid-area: 1 / 1 / span 4 / 2;
+  }
+  .item2 {
+    grid-area: 1 / 2 / 1 / span 1;
+  }
+
+  .btn-group-toggle .btn-secondary.active,
+  .btn-group-toggle .btn-secondary:active,
+  .btn-group-toggle .btn-secondary:focus {
+    background-color: #1B1C1D !important; /* kolor aktywnego przycisku */
+    color: #FFFFFF !important; /* kolor tekstu aktywnego przycisku */
+    border-color: #1B1C1D !important; /* kolor obramowania aktywnego przycisku */
+}
+
+</style>
+  <div class="wrapper">
+      <div class="landing">
+        <select id="typeSelect" onchange="ChangeValue()">
+          <option value="1" selected disabled>Annotation Type</option>
+          <option value="2">Andrews' Pitchfork</option> </select>
+        <button onclick="generateNewPoints()">Generuj nowe punkty</button>
+
+        <div class="grid-container">
+          <div class="item1">
+          <div class="ui visible inverted left vertical sidebar menu" style="width: 330px;">
+            <h1 style="font-family: 'Open Sans'; color: #fdad59; font-size: 30px; letter-spacing: 5px; font-weight: 300; text-align: center; margin-top: 1em">Market Tracker</h1>
+            <a class="item" href="/profile">
+              <i class="home icon"></i>
+              Dashboard
+            </a>
+            <a class="item">
+              <i class="block layout icon"></i>
+              Stock data list
+            </a>
+            <a class="item">
+              <i class="user icon"></i>
+              Profile
+            </a>
+            <a class="item">
+              <i class="comments icon"></i>
+              Private chats
+            </a>
+            <a class="item">
+              <i class="comment alternate icon"></i>
+              Blog comments
+            </a>
+          </div>
+          </div>
+          <div class="item2">
+          <h1 style="font-family: 'Open Sans'; color: #1B1C1D; font-size: 40px; text-align: left; margin-left: 10%; line-height: 1em">Dashboard</h1>
+           </div>
+           <div class="item7">
+             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+               <label class="btn btn-secondary">
+                 <input type="radio" name="options" id="option1" autocomplete="off" onchange="ChangeChart('column')"> Bar chart
+               </label>
+               <label class="btn btn-secondary">
+                 <input type="radio" name="options" id="option2" autocomplete="off" onchange="ChangeChart('ohlc')"> OHLC chart
+               </label>
+               <label class="btn btn-secondary active">
+                 <input type="radio" name="options" id="option3" autocomplete="off" onchange="ChangeChart('line')" checked> Line chart
+               </label>
+             </div>
+           </div>
+             <div class="item3">
+          <div id="container"></div>
+          </div>
+          <div class="item4">
+          <div id="container2"></div>
+          </div>
+          <div class="item5">
+          <div id="container3"></div>
+          </div>
+          <div class="item6">
+          <div id="container4"></div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+
+
+{% endblock %}

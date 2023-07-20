@@ -1,0 +1,356 @@
+1. Ustawic nginx i Unicorn
+
+unicorn - implementacja wsgi - koncept serwowania kodu
+
+produkcyjne:
+np. unicorn
+
+deweloperskie:
+domyślny django
+
+nginx - osobna aplikacja hostowana - webserver
+
+
+
+
+# list of companies:
+# apple - symbol=AAPL dziala
+# ibm - symbol=IBM dziala
+# nvidia - symbol=NVDA dziala
+# AMD - symbol=AMD dziala
+# Intel - symbol=INTC  TSMCX
+
+# https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=INTC&interval=5min&apikey=ZJ7H4QZNJKBB8OM9
+
+# 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day.
+
+
+js
+
+
+function generateNewPoints() {
+    initialData.addData([
+        {"date": '2023-12-28', "open": 511.53, "high": 514.98, "low": 505.79, "close": 506.40},
+        {"date": '2023-12-29', "open": 512.53, "high": 514.88, "low": 505.69, "close": 507.34}
+    ]);
+}
+anychart.onDocumentReady(function () {
+  	initialData = anychart.data.table("date");
+    initialData.addData([
+        {"date": '2021-01-01', "open": 100, "high": 120, "low": 80, "close": 110},
+        {"date": '2021-01-02', "open": 110, "high": 130, "low": 90, "close": 120},
+        {"date": '2021-01-03', "open": 120, "high": 140, "low": 100, "close": 130},
+        // Dodaj więcej danych początkowych tutaj...
+    ]);
+  	var mapping = initialData.mapAs({open: "open", high: "high", low: "low", close: "close"});
+  	var chart = anychart.stock();
+  	chart.plot(0).ohlc(mapping).name('OHLC');
+    chart.container("container").draw();
+  	previous = 0;
+});
+
+function ChangeValue() {
+  var selectElement = event.target;
+  var selectIndex = selectElement.selectedIndex;
+  selectElement.options[previous].disabled = false;
+  selectElement.options[selectIndex].disabled = true;
+  previous = selectIndex;
+  initialData.addData([
+        {"date": '2021-01-01', "open": 200, "high": 220, "low": 100, "close": 210},
+        {"date": '2021-01-02', "open": 310, "high": 330, "low": 200, "close": 320},
+        {"date": '2021-01-03', "open": 420, "high": 440, "low": 300, "close": 430},
+    ]);
+
+};
+
+html
+
+        <select id="typeSelect" onchange="ChangeValue()">
+    <option value="1" selected disabled>Annotation Type</option>
+    <option value="2">Andrews' Pitchfork</option>
+</select>
+<button onclick="removeAll()">Remove All</button>
+<button onclick="selectFirst()">Select the First</button>
+<button onclick="clearSelection()">Clear Selection</button>
+<button onclick="generateNewPoints()">Generuj nowe punkty</button>
+<div id="container"></div>
+
+css
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+select {
+    margin: 10px 0 0 10px;
+}
+button {
+    margin: 10px 0 0 5px;
+}
+#container {
+    position: absolute;
+    width: 100%;
+    top: 35px;
+    bottom: 0;
+}
+
+
+
+
+27.06.2023 js:
+
+function generateNewPoints() {
+    initialData.addData([
+        {"date": '2023-12-28', "open": 511.53, "high": 514.98, "low": 505.79, "close": 506.40},
+        {"date": '2023-12-29', "open": 512.53, "high": 514.88, "low": 505.69, "close": 507.34}
+    ]);
+}
+anychart.onDocumentReady(function () {
+
+  	//var stage = anychart.graphics.create("container");
+
+  	initialData = anychart.data.table("date");
+    initialData.addData([
+        {"date": '2021-01-01', "open": 100, "high": 120, "low": 80, "close": 110.40},
+        {"date": '2021-01-02', "open": 110, "high": 130, "low": 90, "close": 110.50},
+        {"date": '2021-01-03', "open": 120, "high": 140, "low": 100, "close": 110.60},
+    ]);
+  	var TrendMapping = initialData.mapAs({value: "close"});
+    var columnMapping = initialData.mapAs({value: "high"});
+  	var ohlcMapping = initialData.mapAs({open: "open", high: "high", low: "low", close: "close"});
+
+  	var chart = anychart.stock();
+
+  	var ohlc = chart.plot(0);
+  	ohlc.ohlc(ohlcMapping).name('Price');
+  	var column = chart.plot(1);
+  	column.column(columnMapping).name('High');
+  	var line = chart.plot(2);
+  	line.line(TrendMapping).name('Day trend');
+
+
+  	line.legend(false);
+  	ohlc.legend(false);
+  	column.legend(false);
+
+  	chart.top(25);
+
+  	chart.title("AnyStock Legend: Basic Sample");
+
+  	//chart.container(stage);
+
+  	//chart.draw();
+
+  	var legend = anychart.standalones.legend();
+  	legend.itemsSource([ohlc, column, line]);
+  	legend.padding(10);
+  	//legend.container(stage);
+  	//legend.draw();
+
+  	chart.splitters().normal().stroke({
+      color: 'red',
+      dash: '3 4',
+      thickness: 1,
+      opacity: 0.9
+    });
+    chart.splitters().hovered().stroke({
+      color: 'blue',
+      dash: '3 4',
+      thickness: 2,
+      opacity: 0.9
+    });
+    chart.splitters().preview().fill({
+      //color: 'lightgreen',
+      opacity: 0.5
+    });
+
+    chart.container("container").draw();
+  	previous = 0;
+});
+
+function ChangeValue() {
+  var selectElement = event.target;
+  var selectIndex = selectElement.selectedIndex;
+  selectElement.options[previous].disabled = false;
+  selectElement.options[selectIndex].disabled = true;
+  previous = selectIndex;
+  initialData.addData([
+        {"date": '2021-01-01', "open": 200, "high": 220, "low": 100, "close": 210},
+        {"date": '2021-01-02', "open": 310, "high": 330, "low": 200, "close": 320},
+        {"date": '2021-01-03', "open": 420, "high": 440, "low": 300, "close": 430},
+    ]);
+
+};
+
+
+28.06.2023
+
+function generateNewPoints() {
+    initialData.addData([
+        {"date": '2023-12-28', "open": 511.53, "high": 514.98, "low": 505.79, "close": 506.40},
+        {"date": '2023-12-29', "open": 512.53, "high": 514.88, "low": 505.69, "close": 507.34}
+    ]);
+}
+anychart.onDocumentReady(function () {
+  	var stage = anychart.graphics.create("container");
+
+  	initialData = anychart.data.table("date");
+    initialData.addData([
+        {"date": '2021-01-01', "open": 100, "high": 120, "low": 80, "close": 110.40},
+        {"date": '2021-01-02', "open": 110, "high": 130, "low": 90, "close": 110.50},
+        {"date": '2021-01-03', "open": 120, "high": 140, "low": 100, "close": 110.60},
+    ]);
+  	var TrendMapping = initialData.mapAs({value: "close"});
+    var columnMapping = initialData.mapAs({value: "high"});
+  	var ohlcMapping = initialData.mapAs({open: "open", high: "high", low: "low", close: "close"});
+
+  	var chart = anychart.stock();
+
+  	var ohlc = chart.plot(0);
+  	ohlc.ohlc(ohlcMapping).name('Price');
+  	var column = chart.plot(1);
+  	column.column(columnMapping).name('High');
+  	var line = chart.plot(2);
+  	line.line(TrendMapping).name('Trend');
+  	line.priceIndicator({value: 'last-visible'});
+
+
+  	line.legend(false);
+  	ohlc.legend(false);
+  	column.legend(false);
+
+  	chart.top(25);
+
+  	chart.title("AnyStock Legend: Basic Sample");
+
+  	var rangePicker = anychart.ui.rangePicker();
+  	var rangeSelector = anychart.ui.rangeSelector();
+
+  	var customRanges = [
+        {
+            'text': '5 Days',
+            'type': 'unit',
+            'unit': 'day',
+            'count': 5,
+            'anchor': 'first-visible-date'
+        },
+        {
+            'text': 'Year 2007',
+            'startDate': '2007 Jan 1',
+            'endDate': '2007 Dec 31',
+            'type': 'range'
+        },
+        {
+            'text': 'Full Range',
+            'type': 'max'
+        },
+        {
+            'text': '10',
+            'type': 'points',
+            'count': 10,
+            'anchor': 'last-date'
+        }
+    ];
+
+  	rangePicker.format('dd MM yyyy');
+
+  	rangeSelector.ranges(customRanges);
+  	rangeSelector.render(chart);
+
+  	chart.container(stage);
+
+  	chart.draw();
+
+  	chart.selectRange("ytd");
+  	rangePicker.render(chart);
+
+  	var legend = anychart.standalones.legend();
+  	legend.itemsSource([ohlc, column, line]);
+  	legend.useHtml(true);
+  	legend.itemsFormat(function() {
+      var series = this.series;
+      if (series.getType() == "line") {
+        return "<span style='color:#455a64;font-weight:600'>" +
+               series.name() + ":</span> " + this.value;
+      }
+      if (series.getType() == "ohlc") {
+        return "<span style='color:#455a64;font-weight:600'>" +
+               series.name() + ":</span> " +
+               this.open + " / " + this.high + " / " +
+               this.low + " / " + this.close;
+      }
+       if (series.getType() == "column") {
+        return "<span style='color:#455a64;font-weight:600'>" +
+               series.name() + ":</span> " + this.value;
+      }
+
+    });
+  	legend.padding(10);
+  	legend.container(stage);
+  	legend.draw();
+
+  	chart.splitters().normal().stroke({
+      color: 'red',
+      dash: '3 4',
+      thickness: 1,
+      opacity: 0.9
+    });
+    chart.splitters().hovered().stroke({
+      color: 'blue',
+      dash: '3 4',
+      thickness: 2,
+      opacity: 0.9
+    });
+    chart.splitters().preview().fill({
+      //color: 'lightgreen',
+      opacity: 0.5
+    });
+
+  	previous = 0;
+});
+
+function ChangeValue() {
+  var selectElement = event.target;
+  var selectIndex = selectElement.selectedIndex;
+  selectElement.options[previous].disabled = false;
+  selectElement.options[selectIndex].disabled = true;
+  previous = selectIndex;
+  initialData.addData([
+        {"date": '2021-01-01', "open": 200, "high": 220, "low": 100, "close": 210},
+        {"date": '2021-01-02', "open": 310, "high": 330, "low": 200, "close": 320},
+        {"date": '2021-01-03', "open": 420, "high": 440, "low": 300, "close": 430},
+    ]);
+
+};
+
+css:
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+select {
+    margin: 10px 0 0 10px;
+}
+button {
+    margin: 10px 0 0 5px;
+}
+#container {
+    position: absolute;
+    width: 100%;
+    top: 35px;
+    bottom: 0;
+}
+
+html:
+
+    <select id="typeSelect" onchange="ChangeValue()">
+    <option value="1" selected disabled>Annotation Type</option>
+    <option value="2">Andrews' Pitchfork</option>
+</select>
+<button onclick="generateNewPoints()">Generuj nowe punkty</button>
+<div id="container"></div>
