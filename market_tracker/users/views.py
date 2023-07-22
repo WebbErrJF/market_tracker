@@ -17,9 +17,13 @@ class RegisterView(FormView):
         return reverse_lazy('login')
 
 
-def profile(request):
-    return render(request, 'users/dashboard.html', {'title': 'User profile'})
+def dashboard(request):
+    return render(request, 'users/dashboard.html', {'title': 'Dashboard'})
 
 
 def stock_list(request):
     return render(request, 'users/stock_list.html', {'title': 'Stock list data'})
+
+
+def profile(request):
+    return render(request, 'users/profile.html', {'title': 'User profile'})

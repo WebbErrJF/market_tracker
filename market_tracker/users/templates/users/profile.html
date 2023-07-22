@@ -78,8 +78,8 @@
   }
   .grid-container {
     display: grid;
-    grid-template-columns: 330px 1fr;
-    grid-template-rows: 60px 1fr;
+    grid-template-columns: 330px repeat(2, 1fr);
+    grid-template-rows: 60px repeat(2, 1fr);
     height: 95vh;
   }
   .grid-container > div {
@@ -90,8 +90,8 @@
   .item1 {
     grid-area: 1 / 1 / span 4 / 2;
   }
-  .item2 {
-    grid-area: 1 / 2 / span 2;
+  .item4 {
+    grid-area: 2 / 2 / span 2 / span 2;
   }
 
   #containerexample {display: none}
@@ -121,7 +121,7 @@
               <i class="block layout icon"></i>
               Stock data list
             </a>
-            <a class="item" href="/profile">
+            <a class="item">
               <i class="user icon"></i>
               Profile
             </a>
@@ -136,54 +136,20 @@
           </div>
           </div>
           <div class="item2">
-            <div id="containerexample" class="m-0">
-                <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>Stock symbol</th>
-                      <th>Subscribed</th>
-                      <th>Subscription date</th>
-                    </tr>
-                  </thead>
+            <div class="media">
+              <img class="mr-3" src="..." alt="Generic placeholder image" style="width: 200px; height: 200px;">
+                  <div class="media-body">
+                    <h5 class="mt-0">User login</h5>
+                    Description of the user
+                  </div>
+            </div>
+          </div>
+          <div class="item3">
 
-                  <tfoot>
-                    <tr>
-                      <th>Item Type</th>
-                      <th>Order Priority</th>
-                      <th>Order Date</th>
-                      <th>Subscription date</th>
-                    </tr>
-                  </tfoot>
-
-                  <tbody>
-                    <tr>
-                      <td>Baby Food</td>
-                      <td>M</td>
-                      <td>12/20/13</td>
-                      <td>957081544</td>
-                    </tr>
-                    <tr>
-                      <td>Snacks</td>
-                      <td>C</td>
-                      <td>7/5/10</td>
-                      <td>301644504</td>
-                    </tr>
-                    <tr>
-                      <td>Beverages</td>
-                      <td>C</td>
-                      <td>9/12/11</td>
-                      <td>478051030</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            <div id="loadercontainer">
-                <div class="d-flex justify-content-center text-secondary" id="loader">
-                      <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                      </div>
-                </div>
+          </div>
+          <div class="item4">
+              <h1 style="text-align: center;">Customize dashboard</h1>
+            <div class="custom-dashboard" style="width: 100%; height: 100%; background-image: url('/static/users/images/customize_dashboard.png'); background-size: cover; background-attachment: fixed; background-position: center center;">
             </div>
           </div>
         </div>
