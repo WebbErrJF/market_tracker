@@ -16,5 +16,10 @@ class RegisterView(FormView):
     def get_success_url(self):
         return reverse_lazy('login')
 
+
 def profile(request):
-    return render(request, 'users/profile.html', {'title': 'User profile'})
+    return render(request, 'users/dashboard.html', {'title': 'User profile'})
+
+
+def stock_list(request):
+    return render(request, 'users/stock_list.html', {'title': 'Stock list data'})
