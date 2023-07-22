@@ -1,5 +1,9 @@
 import django
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "market_tracker.settings")
 django.setup()
+
 from celery import Celery
 from .tasks import update_stock_db
 
