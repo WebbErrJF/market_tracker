@@ -32,7 +32,6 @@ services:
     depends_on:
       - celery_app
 
-
   celery_app:
     build: .
     command: celery -A api_fetcher.celery_app:celery_obj worker -l info
@@ -40,3 +39,9 @@ services:
       - redis
     environment:
       - DJANGO_SETTINGS_MODULE=market_tracker.settings
+
+  celery_beat:
+    build: .
+    command: celery -A api_fetcher.celery_app:celery_obj beat -l info
+    depends_on:
+      - celery_app
