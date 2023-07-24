@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'api_fetcher.apps.ApiFetcherConfig',
     'homepage.apps.HomepageConfig',
     'crispy_bootstrap4',
-    'django_apscheduler'
 ]
 
 MIDDLEWARE = [
@@ -81,10 +80,10 @@ WSGI_APPLICATION = 'market_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'market_tracker',
+        'NAME': 'market_db',
         'USER': 'postgres',
-        'PASSWORD': 'Tjhdkmjf12222!',
-        'HOST': 'localhost',
+        'PASSWORD': 'postgres',
+        'HOST': 'market_db',
         'PORT': '5432',
     }
 }
