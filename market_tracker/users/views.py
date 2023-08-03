@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .forms import RegisterForm, UserUpdateForm
+from .forms import RegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 
@@ -27,5 +27,7 @@ def stock_list(request):
 
 def profile(request):
     user_form = UserUpdateForm()
+    profile_form = ProfileUpdateForm()
 
-    return render(request, 'users/profile.html', {'title': 'User profile', 'user_form': user_form})
+    return render(request, 'users/profile.html', {'title': 'User profile', 'user_form': user_form,
+                                                  'profile_form': profile_form})
