@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .forms import RegisterForm
+from .forms import RegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 
@@ -17,9 +17,17 @@ class RegisterView(FormView):
         return reverse_lazy('login')
 
 
-def profile(request):
-    return render(request, 'users/dashboard.html', {'title': 'User profile'})
+def dashboard(request):
+    return render(request, 'users/dashboard.html', {'title': 'Dashboard'})
 
 
 def stock_list(request):
     return render(request, 'users/stock_list.html', {'title': 'Stock list data'})
+
+
+def profile(request):
+    user_form = UserUpdateForm()
+    profile_form = ProfileUpdateForm()
+
+    return render(request, 'users/profile.html', {'title': 'User profile', 'user_form': user_form,
+                                                  'profile_form': profile_form})
