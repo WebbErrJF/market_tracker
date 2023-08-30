@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from django.views import View
 
 
-def homepage(request):
-    return render(request, 'homepage/home.html', {'title': 'Home'})
+class HomepageView(View):
+    template_name = 'homepage/home.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'title': 'Home'}
+        return render(request, self.template_name, context)

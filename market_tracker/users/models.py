@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from api_fetcher.models import StockCompany
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 
 
 class Profile(models.Model):
@@ -10,3 +13,34 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user.username)
 
+
+# def unique_dashboard_number_validator(value, user):
+#     if value in range(1, 5):
+#         queryset = SubscribedCompanies.objects.filter(user=user, dashboard_number=value)
+#         if queryset.exists():
+#             raise ValidationError('Dashboard number must be unique for values 1-4.')
+
+
+class SubscribedCompanies(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stock_company = models.ForeignKey(StockCompany, on_delete=models.CASCADE)
+    subscription_date = models.DateTimeField(null=True)
+    dashboard_number = models.IntegerField(default=0, validators=[MaxValueValidator(4), MinValueValidator(0)])
+
+    class Meta:
+        unique_together = ('user', 'stock_company')
+
+    def clean(self):
+        if 1 <= self.dashboard_number <= 4:
+            queryset = SubscribedCompanies.objects.filter(
+                user=self.user,
+                dashboard_number=self.dashboard_number
+            )
+            if self.pk:
+                queryset = queryset.exclude(pk=self.pk)
+            if queryset.exists():
+                raise ValidationError({'dashboard_number': 'This number is already taken.'})
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)

@@ -1,6 +1,7 @@
 {% extends 'homepage/base.html' %}
 {% load static %}
 {% block extra_script %}
+{% csrf_token %}
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -10,6 +11,7 @@
   <script src="{% static 'users/js/script.js' %}"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css'>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js'></script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
     var header = document.querySelector('header');
@@ -24,21 +26,117 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var table = $('#example').on('draw.dt', function () {
+    // async function getData() {
+    //   try {
+    //     let response = await fetch('/api/your-data/');
+    //     let data = await response.json();
+    //     return data;
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //     return [];
+    //   }
+    // }
+    async function getArticles(){
+    let articlesResp = await fetch('http://127.0.0.1:8000/subscriptions');
+
+    let data = await articlesResp.json();
+    sampleData3 = [];
+    data.forEach((company, index) => {
+        if ('subscription_date' in company) {
+          sampleData3.push({
+            company: company.Name,
+            stockSymbol: company.Symbol,
+            subscribed: true,
+            subscriptionDate: company.subscription_date
+          });
+        } else {
+          console.log('tutaj nie ma')
+          sampleData3.push({
+            company: company.Name,
+            stockSymbol: company.Symbol,
+            subscribed: false,
+            subscriptionDate: ''
+          });
+        };
+        // console.log('===================');
+        // console.log(`Article no ${index}`);
+        // console.log(`Article title: ${company.Name}`);
+        // console.log(`Article content: ${company.Symbol}`);
+        // console.log(`Article content: ${company.subscription_date}`);
+        // console.log(sampleData3);
+        });
+        }
+
+        async function changeSubscription(stockCompanyId, subscribed) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const response = await fetch('http://127.0.0.1:8000/subscriptions/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ stock_company_id: stockCompanyId }),
+        });
+
+        if (response.ok) {
+            if (subscribed) {
+                console.log('Subscribed successfully');
+            } else {
+                console.log('Unsubscribed successfully');
+            }
+            await updateTable();
+        } else {
+            console.error('Error changing subscription');
+        }}
+
+
+        async function updateTable() {
+          await getArticles();
+          table.clear().rows.add(sampleData3).draw();
+        }
+
+        async function initialize() {
+        await getArticles();
+        updateTable();
+        table = $('#example').on('draw.dt', function () {
             $("#containerexample").attr("id", "container");
             $("#loadercontainer").css("display", "none");
         }).DataTable({
+            columns: [
+              {title: 'Cop. name', data: 'company'},
+              {title: 'Stock symbol', data: 'stockSymbol'},
+              {title: 'Subscribed',
+            data: 'subscribed',
+            render: function (data, type, row) {
+                if (type === 'display') {
+                    return '<input type="checkbox" ' + (data ? 'checked' : '') + '>';
+                }
+                return data;
+            }
+            },
+              {title: 'Subscription Date', data: 'subscriptionDate'}
+            ],
+            data: sampleData3,
             lengthChange: false,
             buttons: ['excel', 'pdf'],
             "scrollX": true,
             "paging": false,
             "order": [[3, "desc"]]
         });
-
         table.buttons().container()
             .appendTo('#example_wrapper .col-md-6:eq(0)');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+    initialize();
+
+    $(document).on('change', 'input[type="checkbox"]', async function () {
+        var companyId = $(this).closest('tr').find('td:first').text();
+        var subscribed = this.checked;
+        await changeSubscription(companyId, subscribed);
+        console.log(`Checkbox ${subscribed ? 'checked' : 'unchecked'} for company with ID: ${companyId}`);
     });
+});
+
   </script>
 
   <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
@@ -138,44 +236,6 @@
           <div class="item2">
             <div id="containerexample" class="m-0">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>Stock symbol</th>
-                      <th>Subscribed</th>
-                      <th>Subscription date</th>
-                    </tr>
-                  </thead>
-
-                  <tfoot>
-                    <tr>
-                      <th>Item Type</th>
-                      <th>Order Priority</th>
-                      <th>Order Date</th>
-                      <th>Subscription date</th>
-                    </tr>
-                  </tfoot>
-
-                  <tbody>
-                    <tr>
-                      <td>Baby Food</td>
-                      <td>M</td>
-                      <td>12/20/13</td>
-                      <td>957081544</td>
-                    </tr>
-                    <tr>
-                      <td>Snacks</td>
-                      <td>C</td>
-                      <td>7/5/10</td>
-                      <td>301644504</td>
-                    </tr>
-                    <tr>
-                      <td>Beverages</td>
-                      <td>C</td>
-                      <td>9/12/11</td>
-                      <td>478051030</td>
-                    </tr>
-                  </tbody>
                 </table>
               </div>
             <div id="loadercontainer">

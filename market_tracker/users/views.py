@@ -1,8 +1,21 @@
+import time
+from django.http import StreamingHttpResponse
 from django.shortcuts import render
-
+from .models import SubscribedCompanies
 from .forms import RegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.views.generic import FormView
 from django.urls import reverse_lazy
+from django.apps import apps
+import json
+from .serializers import StockCompanySerializer, InitialDataSerializer
+from api_fetcher.models import StockCompany, StockData
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils import timezone
+from django.views import View
+from datetime import datetime, timedelta
+
 
 
 class RegisterView(FormView):
@@ -17,17 +30,124 @@ class RegisterView(FormView):
         return reverse_lazy('login')
 
 
-def dashboard(request):
-    return render(request, 'users/dashboard.html', {'title': 'Dashboard'})
+class DashboardView(View):
+    template_name = 'users/dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'title': 'Dashboard'}
+        return render(request, self.template_name, context)
 
 
-def stock_list(request):
-    return render(request, 'users/stock_list.html', {'title': 'Stock list data'})
+class StockListView(View):
+    template_name = 'users/stock_list.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'title': 'Stock list data'}
+        return render(request, self.template_name, context)
 
 
-def profile(request):
-    user_form = UserUpdateForm()
-    profile_form = ProfileUpdateForm()
+class ProfileView(View):
+    template_name = 'users/profile.html'
 
-    return render(request, 'users/profile.html', {'title': 'User profile', 'user_form': user_form,
-                                                  'profile_form': profile_form})
+    def get(self, request, *args, **kwargs):
+        user_form = UserUpdateForm()
+        profile_form = ProfileUpdateForm()
+        context = {'title': 'User profile', 'user_form': user_form, 'profile_form': profile_form}
+        return render(request, self.template_name, context)
+
+
+class StreamView(View):
+    @staticmethod
+    def __retrieve_data(user_stock_symbols, stock_data_model):
+        output = {}
+        for user_stock_set in user_stock_symbols:
+            stock_object = stock_data_model.objects.select_related('Stock_symbol').filter(
+                Stock_symbol__Symbol=user_stock_set[0]).last()
+            output[user_stock_set[1]] = {'Data': stock_object}
+        return output
+
+    @staticmethod
+    def __modify_date(stock_object_dict):
+        for stock_object in stock_object_dict.values():
+            date_object = stock_object['Data'].stockdate_set.first()
+            stock_object['Date'] = date_object.Date.strftime('%Y-%m-%d %H:%M:%S') if stock_object else None
+
+    @staticmethod
+    def __generate_output_dict(stock_data):
+        output_json = {}
+        for key, value in stock_data.items():
+            output_json[key] = {'data': value['Data'].Price,
+                                'change_point': value['Data'].Change_point,
+                                'stock_date': value['Date']
+                                }
+        return output_json
+
+    def event_stream(self):
+        while True:
+            time.sleep(30)
+            user_stock_symbols = SubscribedCompanies.objects.filter(user__username='jakub', dashboard_number__gt=0
+                                                                    ).values_list('stock_company__Symbol',
+                                                                                  'dashboard_number', flat=False)
+            stock_data_model = apps.get_model('api_fetcher', 'StockData')
+            stock_data = self.__retrieve_data(user_stock_symbols, stock_data_model)
+            self.__modify_date(stock_data)
+            output_dict = self.__generate_output_dict(stock_data)
+            data_json = json.dumps(output_dict)
+            yield f'data: {data_json}\n\n'
+
+    def get(self, request, *args, **kwargs):
+        return StreamingHttpResponse(self.event_stream(), content_type='text/event-stream')
+
+
+class GetAllStockCompanies(APIView):
+    def get(self, request):
+        stock_companies = StockCompany.objects.all()
+        data = []
+        user = request.user
+        for company in stock_companies:
+            subscribed_data = SubscribedCompanies.objects.filter(user=user, stock_company=company)
+            serialized_company = StockCompanySerializer(company).data
+            if subscribed_data.exists():
+                subscription_date = subscribed_data.first().subscription_date
+                serialized_company['subscription_date'] = subscription_date
+            data.append(serialized_company)
+        return Response(data)
+
+    def post(self, request):
+        user = request.user
+        stock_company_id = request.data.get('stock_company_id')
+        stock_company = StockCompany.objects.get(Name=stock_company_id)
+        subscribed_entry = SubscribedCompanies.objects.filter(user=user, stock_company=stock_company).first()
+        if subscribed_entry:
+            subscribed_entry.delete()
+            return Response({'message': 'Subscription removed successfully'}, status=status.HTTP_204_NO_CONTENT)
+        subscribed_entry, created = SubscribedCompanies.objects.get_or_create(
+            user=user, stock_company=stock_company)
+        if created:
+            subscribed_entry.subscription_date = timezone.now()
+            subscribed_entry.save()
+            return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
+
+
+class GetInitialData(APIView):
+    def get(self, request):
+        data = []
+        user = request.user
+        subscribed_companies = SubscribedCompanies.objects.filter(user=user, dashboard_number__gt=0).values_list(
+            'stock_company__Symbol', 'dashboard_number', flat=False)
+        one_day_ago = datetime.now() - timedelta(hours=1)
+        for company_symbol, dashboard_number in subscribed_companies:
+            stock_data = StockData.objects.filter(Stock_symbol__Symbol=company_symbol, stockdate__Date__gte=one_day_ago)
+            serialized_company_data = []
+            for data_item in stock_data:
+                serialized_data_item = InitialDataSerializer(data_item).data
+                date_item = data_item.stockdate_set.first()
+                serialized_company_data.append({
+                    'data': serialized_data_item,
+                    'date': date_item.Date.strftime('%Y-%m-%d %H:%M:%S') if date_item else None
+                })
+            data.append({
+                'symbol': dashboard_number,
+                'data': serialized_company_data,
+            })
+        return Response(data)
