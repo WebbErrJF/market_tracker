@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'api_fetcher.apps.ApiFetcherConfig',
     'homepage.apps.HomepageConfig',
     'crispy_bootstrap4',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
