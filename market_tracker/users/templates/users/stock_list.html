@@ -42,28 +42,28 @@
     let data = await articlesResp.json();
     sampleData3 = [];
     data.forEach((company, index) => {
-        if ('subscription_date' in company) {
+        if (company.Default === true){
+          sampleData3.push({
+            company: company.Name,
+            stockSymbol: company.Symbol,
+            subscribed: true,
+            subscriptionDate: "Default"
+          })}
+        else if ('subscription_date' in company){
           sampleData3.push({
             company: company.Name,
             stockSymbol: company.Symbol,
             subscribed: true,
             subscriptionDate: company.subscription_date
-          });
-        } else {
-          console.log('tutaj nie ma')
+          })}
+        else {
           sampleData3.push({
             company: company.Name,
             stockSymbol: company.Symbol,
             subscribed: false,
             subscriptionDate: ''
           });
-        };
-        // console.log('===================');
-        // console.log(`Article no ${index}`);
-        // console.log(`Article title: ${company.Name}`);
-        // console.log(`Article content: ${company.Symbol}`);
-        // console.log(`Article content: ${company.subscription_date}`);
-        // console.log(sampleData3);
+        }
         });
         }
 
@@ -105,12 +105,15 @@
             columns: [
               {title: 'Cop. name', data: 'company'},
               {title: 'Stock symbol', data: 'stockSymbol'},
-              {title: 'Subscribed',
-            data: 'subscribed',
+              {title: 'Subscribed', data: 'subscribed',
             render: function (data, type, row) {
                 if (type === 'display') {
+                  if (row.subscriptionDate === 'Default'){
+                    return '<input type="checkbox" checked disabled>';
+                  }
+                  else {
                     return '<input type="checkbox" ' + (data ? 'checked' : '') + '>';
-                }
+                }}
                 return data;
             }
             },

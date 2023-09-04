@@ -130,7 +130,8 @@ class GetAllStockCompanies(APIView):
     def __get_subscribed_stock_companies(user):
         subscribed_companies = SubscribedCompanies.objects.filter(user=user).values('stock_company__Name',
                                                                                     'stock_company__Symbol',
-                                                                                    'dashboard_number')
+                                                                                    'dashboard_number',
+                                                                                    'stock_company__Default')
         return Response(subscribed_companies)
 
     @staticmethod
