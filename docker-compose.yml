@@ -10,6 +10,8 @@ services:
         python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
+    volumes:
+      - ./market_tracker/media/profile_pics:/market_tracker/media/profile_pics
     depends_on:
       market_db:
         condition: service_healthy

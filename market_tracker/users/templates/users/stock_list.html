@@ -37,7 +37,7 @@
     //   }
     // }
     async function getArticles(){
-    let articlesResp = await fetch('http://127.0.0.1:8000/subscriptions');
+    let articlesResp = await fetch(`/subscriptions/${'all'}`);
 
     let data = await articlesResp.json();
     sampleData3 = [];
@@ -69,7 +69,7 @@
 
         async function changeSubscription(stockCompanyId, subscribed) {
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        const response = await fetch('http://127.0.0.1:8000/subscriptions/', {
+        const response = await fetch(`/subscriptions/${'subscribe'}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

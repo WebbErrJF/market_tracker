@@ -41,23 +41,18 @@ function processApiResponse(apiResponse) {
     }
 
 function setupCharts(initial_data) {
-      const stage1 = anychart.graphics.create("container");
-      const stage2 = anychart.graphics.create("container2");
-      const stage3 = anychart.graphics.create("container3");
-      const stage4 = anychart.graphics.create("container4");
-
-      TrendMapping1 = initial_data[4].mapAs({value: "close"});
-      columnMapping1 = initial_data[4].mapAs({value: "high"});
-      ohlcMapping1 = initial_data[4].mapAs({open: "open", high: "high", low: "low", close: "close"});
-      TrendMapping2 = initial_data[3].mapAs({value: "close"});
-      columnMapping2 = initial_data[3].mapAs({value: "high"});
-      ohlcMapping2 = initial_data[3].mapAs({open: "open", high: "high", low: "low", close: "close"});
-      TrendMapping3 = initial_data[2].mapAs({value: "close"});
-      columnMapping3 = initial_data[2].mapAs({value: "high"});
-      ohlcMapping3 = initial_data[2].mapAs({open: "open", high: "high", low: "low", close: "close"});
-      TrendMapping4 = initial_data[1].mapAs({value: "close"});
-      columnMapping4 = initial_data[1].mapAs({value: "high"});
-      ohlcMapping4 = initial_data[1].mapAs({open: "open", high: "high", low: "low", close: "close"});
+      TrendMapping1 = initial_data[1].mapAs({value: "close"});
+      columnMapping1 = initial_data[1].mapAs({value: "high"});
+      ohlcMapping1 = initial_data[1].mapAs({open: "open", high: "high", low: "low", close: "close"});
+      TrendMapping2 = initial_data[2].mapAs({value: "close"});
+      columnMapping2 = initial_data[2].mapAs({value: "high"});
+      ohlcMapping2 = initial_data[2].mapAs({open: "open", high: "high", low: "low", close: "close"});
+      TrendMapping3 = initial_data[3].mapAs({value: "close"});
+      columnMapping3 = initial_data[3].mapAs({value: "high"});
+      ohlcMapping3 = initial_data[3].mapAs({open: "open", high: "high", low: "low", close: "close"});
+      TrendMapping4 = initial_data[4].mapAs({value: "close"});
+      columnMapping4 = initial_data[4].mapAs({value: "high"});
+      ohlcMapping4 = initial_data[4].mapAs({open: "open", high: "high", low: "low", close: "close"});
 
       chart1 = anychart.stock();
       chart2 = anychart.stock();
@@ -131,6 +126,11 @@ function setupCharts(initial_data) {
       rangeSelector4.ranges(customRanges);
       rangeSelector4.render(chart4);
 
+      const stage1 = anychart.graphics.create("container");
+      const stage2 = anychart.graphics.create("container2");
+      const stage3 = anychart.graphics.create("container3");
+      const stage4 = anychart.graphics.create("container4");
+
       chart1.container(stage1);
       chart1.draw();
       chart2.container(stage2);
@@ -151,7 +151,7 @@ function setupCharts(initial_data) {
     }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const apiResponse = await fetchApiResponse("/initial-data/");
+  const apiResponse = await fetchApiResponse(`/subscriptions/${'initial'}`);
   initial_data = processApiResponse(apiResponse);
   setupCharts(initial_data);
 });

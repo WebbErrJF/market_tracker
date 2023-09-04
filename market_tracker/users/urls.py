@@ -12,6 +12,5 @@ urlpatterns = [
     path('stock-list/', views.StockListView.as_view(), name='stock_list'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('stream/', views.StreamView.as_view(), name='stream'),
-    path('subscriptions/', views.GetAllStockCompanies.as_view(), name='get_subscriptions'),
-    path('initial-data/', views.GetInitialData.as_view(), name='initial_data')
+    path('subscriptions/<str:param>/', views.GetAllStockCompanies.as_view(), name='get_subscriptions')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

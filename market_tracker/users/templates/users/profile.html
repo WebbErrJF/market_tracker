@@ -2,6 +2,7 @@
 {% load static %}
 {% block extra_script %}
 {% load crispy_forms_tags %}
+{% csrf_token %}
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -63,7 +64,92 @@
   <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile.css' %}">
+  <script>
+    // Pobieramy referencję do pola wyboru za pomocą ID
 
+async function fetchApiResponse(url) {
+      const response = await fetch(url);
+      return await response.json();
+      }
+async function addOptions() {
+  var selectElements = [
+    document.getElementById("first-chart"),
+    document.getElementById("second-chart"),
+    document.getElementById("third-chart"),
+    document.getElementById("fourth-chart")
+  ];
+
+  response = await fetchApiResponse(`/subscriptions/${'subscribed'}`)
+
+  var optionValues = [];
+  var optionTexts = [];
+  var dashboardNumber = [];
+  response.forEach(responseItem => {
+    const name = responseItem.stock_company__Name;
+    const value = responseItem.stock_company__Symbol;
+    const number = responseItem.dashboard_number;
+    optionValues.push(value)
+    optionTexts.push(name)
+    dashboardNumber.push(number)
+  })
+
+  for (var i = 0; i < selectElements.length; i++) {
+    for (var j = 0; j < optionValues.length; j++) {
+      var option = document.createElement("option");
+      option.value = optionValues[j];
+      option.text = optionTexts[j];
+      if (i+1 === dashboardNumber[j]) {
+        option.selected = true;
+      }
+      selectElements[i].add(option);
+    }
+  }
+}
+
+addOptions()
+  async function myFunction(dashboard_number, chartId) {
+    var stock_symbol = document.getElementById(chartId).value;
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const response = await fetch(`/subscriptions/${'display'}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
+      },
+      body: JSON.stringify({stock_company_symbol: stock_symbol,
+                            dashboard_number: dashboard_number
+                           }),
+    });
+    if (response.ok) {
+            console.log('Post successfully');
+        } else {
+            console.error('Error changing subscription');
+        }
+  }
+
+  </script>
+
+  <style>
+    .select-wrapper {
+      height: 50px;
+      overflow-y: visible;
+    }
+
+    .select {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 25px;
+      border-color: #555;
+      padding: 10px;
+      scrollbar-color: gray #ddd;
+    }
+    *::-webkit-scrollbar-thumb {
+      background-color: black;
+      border-radius: 20px;
+      border: 3px solid white;
+    }
+
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -135,11 +221,28 @@
               <div class="user-photo" style="height: 100%; width: 100%;">
                 <img class="dashboard-image" src="/static/users/images/customize_dashboard.png" style="height: 100%; width: 100%; object-fit: contain; object-position: center;">
                         <div class="buttons-container">
-                          <button class="button button1">First chart</button>
-                          <button class="button button2">Second chart</button>
-                          <button class="button button3">Third chart</button>
-                          <button class="button button4">Fourth chart</button>
+                        <div class="select-wrapper form-column form-column-field">
+                          <select class="button button1" id ="first-chart" onfocus="this.size=3;" onblur="this.size=1;"
+                                  onchange="this.size=1; this.blur(); myFunction(1, 'first-chart')">
+                          </select>
                         </div>
+                        <div class="select-wrapper form-column form-column-field">
+                          <select class="button button2" id ="second-chart" onfocus="this.size=3;" onblur="this.size=1;"
+                                  onchange="this.size=1; this.blur(); myFunction(2, 'second-chart')">
+                          </select>
+                        </div>
+                        <div class="select-wrapper form-column form-column-field">
+                          <select class="button button3" id ="third-chart" onfocus="this.size=3;" onblur="this.size=1;"
+                                  onchange="this.size=1; this.blur(); myFunction(3, 'third-chart')">
+                          </select>
+                        </div>
+                        <div class="select-wrapper form-column form-column-field">
+                          <select class="button button4" id ="fourth-chart" onfocus="this.size=3;" onblur="this.size=1;"
+                                  onchange="this.size=1; this.blur(); myFunction(4, 'fourth-chart')">
+                          </select>
+                        </div>
+                        </div>
+
               </div>
           </div>
         </div>

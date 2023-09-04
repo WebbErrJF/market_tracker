@@ -7,18 +7,11 @@ from django.core.exceptions import ValidationError
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.avif', upload_to='profile_pics')
+    image = models.ImageField(default='default.avif', upload_to='profile_pics/')
     description = models.TextField(help_text='Describe yourself in few words')
 
     def __str__(self):
         return str(self.user.username)
-
-
-# def unique_dashboard_number_validator(value, user):
-#     if value in range(1, 5):
-#         queryset = SubscribedCompanies.objects.filter(user=user, dashboard_number=value)
-#         if queryset.exists():
-#             raise ValidationError('Dashboard number must be unique for values 1-4.')
 
 
 class SubscribedCompanies(models.Model):

@@ -17,7 +17,6 @@ from django.views import View
 from datetime import datetime, timedelta
 
 
-
 class RegisterView(FormView):
     template_name = 'users/register.html'
     form_class = RegisterForm
@@ -100,10 +99,24 @@ class StreamView(View):
 
 
 class GetAllStockCompanies(APIView):
-    def get(self, request):
+    def __init__(self):
+        self._get_decision_dict = {'all': self.__get_all_stock_companies,
+                                   'subscribed': self.__get_subscribed_stock_companies,
+                                   'initial': self.__get_initial_stock_data
+                                   }
+        self._post_decision_dict = {'subscribe': self.__post_subscribed_company,
+                                    'display': self.__post_display_company}
+        super().__init__()
+
+    def get(self, request, param):
+        user = request.user
+        response = self._get_decision_dict[param](user)
+        return response
+
+    @staticmethod
+    def __get_all_stock_companies(user):
         stock_companies = StockCompany.objects.all()
         data = []
-        user = request.user
         for company in stock_companies:
             subscribed_data = SubscribedCompanies.objects.filter(user=user, stock_company=company)
             serialized_company = StockCompanySerializer(company).data
@@ -113,26 +126,16 @@ class GetAllStockCompanies(APIView):
             data.append(serialized_company)
         return Response(data)
 
-    def post(self, request):
-        user = request.user
-        stock_company_id = request.data.get('stock_company_id')
-        stock_company = StockCompany.objects.get(Name=stock_company_id)
-        subscribed_entry = SubscribedCompanies.objects.filter(user=user, stock_company=stock_company).first()
-        if subscribed_entry:
-            subscribed_entry.delete()
-            return Response({'message': 'Subscription removed successfully'}, status=status.HTTP_204_NO_CONTENT)
-        subscribed_entry, created = SubscribedCompanies.objects.get_or_create(
-            user=user, stock_company=stock_company)
-        if created:
-            subscribed_entry.subscription_date = timezone.now()
-            subscribed_entry.save()
-            return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
+    @staticmethod
+    def __get_subscribed_stock_companies(user):
+        subscribed_companies = SubscribedCompanies.objects.filter(user=user).values('stock_company__Name',
+                                                                                    'stock_company__Symbol',
+                                                                                    'dashboard_number')
+        return Response(subscribed_companies)
 
-
-class GetInitialData(APIView):
-    def get(self, request):
+    @staticmethod
+    def __get_initial_stock_data(user):
         data = []
-        user = request.user
         subscribed_companies = SubscribedCompanies.objects.filter(user=user, dashboard_number__gt=0).values_list(
             'stock_company__Symbol', 'dashboard_number', flat=False)
         one_day_ago = datetime.now() - timedelta(hours=1)
@@ -151,3 +154,36 @@ class GetInitialData(APIView):
                 'data': serialized_company_data,
             })
         return Response(data)
+
+    def post(self, request, param):
+        user = request.user
+        response = self._post_decision_dict[param](request, user)
+        return response
+
+    @staticmethod
+    def __post_subscribed_company(request, user, *args, **kwargs):
+        stock_company_id = request.data.get('stock_company_id')
+        stock_company = StockCompany.objects.get(Name=stock_company_id)
+        subscribed_entry = SubscribedCompanies.objects.filter(user=user, stock_company=stock_company).first()
+        if subscribed_entry:
+            subscribed_entry.delete()
+            return Response({'message': 'Subscription removed successfully'}, status=status.HTTP_204_NO_CONTENT)
+        subscribed_entry, created = SubscribedCompanies.objects.get_or_create(
+            user=user, stock_company=stock_company)
+        if created:
+            subscribed_entry.subscription_date = timezone.now()
+            subscribed_entry.save()
+            return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
+
+    @staticmethod
+    def __post_display_company(request, user):
+        stock_company_symbol = request.data.get('stock_company_symbol')
+        dashboard_number = request.data.get('dashboard_number')
+        subscribed_company_before = SubscribedCompanies.objects.get(user=user, dashboard_number=dashboard_number)
+        subscribed_company_actual = SubscribedCompanies.objects.get(user=user,
+                                                                    stock_company__Symbol=stock_company_symbol)
+        subscribed_company_before.dashboard_number = 0
+        subscribed_company_before.save()
+        subscribed_company_actual.dashboard_number = dashboard_number
+        subscribed_company_actual.save()
+        return Response({'message': 'Post successfully'}, status=status.HTTP_201_CREATED)
