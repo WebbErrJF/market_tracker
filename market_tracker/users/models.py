@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.avif', upload_to='profile_pics/')
+    image = models.ImageField(default='profile_pics/default.png', upload_to='profile_pics/')
     description = models.TextField(help_text='Describe yourself in few words')
 
     def __str__(self):

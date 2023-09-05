@@ -15,6 +15,7 @@ from rest_framework import status
 from django.utils import timezone
 from django.views import View
 from datetime import datetime, timedelta
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class RegisterView(FormView):
@@ -29,7 +30,7 @@ class RegisterView(FormView):
         return reverse_lazy('login')
 
 
-class DashboardView(View):
+class DashboardView(LoginRequiredMixin, View):
     template_name = 'users/dashboard.html'
 
     def get(self, request, *args, **kwargs):
@@ -37,7 +38,7 @@ class DashboardView(View):
         return render(request, self.template_name, context)
 
 
-class StockListView(View):
+class StockListView(LoginRequiredMixin, View):
     template_name = 'users/stock_list.html'
 
     def get(self, request, *args, **kwargs):
@@ -45,7 +46,7 @@ class StockListView(View):
         return render(request, self.template_name, context)
 
 
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, View):
     template_name = 'users/profile.html'
 
     def get(self, request, *args, **kwargs):
@@ -138,9 +139,9 @@ class GetAllStockCompanies(APIView):
     def __get_initial_stock_data(user):
         data = []
         subscribed_companies = SubscribedCompanies.objects.filter(user=user, dashboard_number__gt=0).values_list(
-            'stock_company__Symbol', 'dashboard_number', flat=False)
+            'stock_company__Symbol', 'dashboard_number', 'stock_company__Name', flat=False)
         one_day_ago = datetime.now() - timedelta(hours=1)
-        for company_symbol, dashboard_number in subscribed_companies:
+        for company_symbol, dashboard_number, company_name in subscribed_companies:
             stock_data = StockData.objects.filter(Stock_symbol__Symbol=company_symbol, stockdate__Date__gte=one_day_ago)
             serialized_company_data = []
             for data_item in stock_data:
@@ -153,6 +154,7 @@ class GetAllStockCompanies(APIView):
             data.append({
                 'symbol': dashboard_number,
                 'data': serialized_company_data,
+                'name': company_name
             })
         return Response(data)
 

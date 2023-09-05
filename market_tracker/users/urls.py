@@ -12,5 +12,6 @@ urlpatterns = [
     path('stock-list/', views.StockListView.as_view(), name='stock_list'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('stream/', views.StreamView.as_view(), name='stream'),
-    path('subscriptions/<str:param>/', views.GetAllStockCompanies.as_view(), name='get_subscriptions')
+    path('subscriptions/<str:param>/', views.GetAllStockCompanies.as_view(), name='get_subscriptions'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

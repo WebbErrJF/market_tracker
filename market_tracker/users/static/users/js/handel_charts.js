@@ -18,10 +18,11 @@ function createInitialDataTables() {
 
 function processApiResponse(apiResponse) {
       const initial_data = createInitialDataTables();
-
+      companies_names = {};
       apiResponse.forEach(responseItem => {
         const symbol = responseItem.symbol;
         const dataItems = responseItem.data;
+        const name = responseItem.name;
 
         if (dataItems) {
           dataItems.forEach(dataItem => {
@@ -33,6 +34,10 @@ function processApiResponse(apiResponse) {
             initial_data[symbol].addData([
               {"date": dateItem, "open": open, "high": high, "low": low, "close": price}
             ]);
+            if (!companies_names[symbol]){
+                companies_names[symbol] = name;
+            }
+
           });
         }
       });
@@ -68,14 +73,18 @@ function setupCharts(initial_data) {
       var line4 = chart4.plot(0);
       line4.area(TrendMapping4).name('Trend');
 
+      selectable1 = TrendMapping1.createSelectable();
+      selectable2 = TrendMapping2.createSelectable();
+      selectable3 = TrendMapping3.createSelectable();
+      selectable4 = TrendMapping4.createSelectable();
       chart1.top(25);
-      chart1.title("AnyStock Legend: Basic Sample");
+      chart1.title("AnyStock Legend: " + companies_names[1]);
       chart2.top(25);
-      chart2.title("AnyStock Legend: Basic Sample");
+      chart2.title("AnyStock Legend: " + companies_names[2]);
       chart3.top(25);
-      chart3.title("AnyStock Legend: Basic Sample");
+      chart3.title("AnyStock Legend: " + companies_names[3]);
       chart4.top(25);
-      chart4.title("AnyStock Legend: Basic Sample");
+      chart4.title("AnyStock Legend: " + companies_names[4]);
 
       var rangePicker1 = anychart.ui.rangePicker();
       var rangeSelector1 = anychart.ui.rangeSelector();
