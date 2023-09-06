@@ -12,7 +12,7 @@ from api_fetcher.models import StockCompany, StockData
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.utils import timezone
+from django.utils import timezone, dateformat
 from django.views import View
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -174,7 +174,7 @@ class GetAllStockCompanies(APIView):
         subscribed_entry, created = SubscribedCompanies.objects.get_or_create(
             user=user, stock_company=stock_company)
         if created:
-            subscribed_entry.subscription_date = timezone.now()
+            subscribed_entry.subscription_date = dateformat.format(timezone.now(), 'Y-m-d\TH:i:s\Z')
             subscribed_entry.save()
             return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
 

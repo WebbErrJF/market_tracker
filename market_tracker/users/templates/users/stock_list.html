@@ -26,16 +26,7 @@
   </script>
 
   <script>
-    // async function getData() {
-    //   try {
-    //     let response = await fetch('/api/your-data/');
-    //     let data = await response.json();
-    //     return data;
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //     return [];
-    //   }
-    // }
+
     async function getArticles(){
     let articlesResp = await fetch(`/subscriptions/${'all'}`);
 
@@ -122,8 +113,9 @@
             data: sampleData3,
             lengthChange: false,
             buttons: ['excel', 'pdf'],
-            "scrollX": true,
+            "scrollX": false,
             "paging": false,
+            "responsive": true,
             "order": [[3, "desc"]]
         });
         table.buttons().container()

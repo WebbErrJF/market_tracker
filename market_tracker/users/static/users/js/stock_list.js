@@ -2,10 +2,11 @@ $(document).ready(function() {
 	    var table = $('#example').on( 'draw.dt', function () {
     $("#containerexample").attr("id", "container"); $("#loadercontainer").css("display","none");
   } ).DataTable( {
-	        lengthChange: false,
+	        lengthChange: true,
 	        buttons: [ 'excel', 'pdf', 'colvis' ],
-            "scrollX": true,
+            "scrollX": false,
             "paging": false,
+			"responsive": true,
             "order": [[ 3, "desc" ]]
 	    } );
 	 
