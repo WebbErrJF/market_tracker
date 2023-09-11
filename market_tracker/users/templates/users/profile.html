@@ -149,6 +149,11 @@ addOptions()
       border: 3px solid white;
     }
 
+    .item3 {
+      /*display: flex;*/
+      align-items: center;
+}
+
   </style>
 {% endblock %}
 
@@ -191,10 +196,10 @@ addOptions()
           </div>
           </div>
           <div class="item22">
-            <h1 style="text-align: center;">Basic user information</h1>
+            <h1 style="text-align: center;">Basic profile information</h1>
           </div>
           <div class="item33">
-            <h1 style="text-align: center;">Update user information</h1>
+            <h1 style="text-align: center;">Update user/profile information</h1>
           </div>
           <div class="item2">
             <div class="media" style="padding: 7%;">
@@ -207,14 +212,25 @@ addOptions()
           </div>
           <div class="item3">
 
-            <form method="POST" enctype="multipart/form-data" style="padding: 7%">
+            <form method="POST" enctype="multipart/form-data" action="" style="padding: 4%">
               {% csrf_token %}
-              <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Profile info!</legend>
+              <input type="hidden" name="action" value="update-user">
+              <fieldset>
+                <legend class="border-bottom mb-4">User info!</legend>
                   {{ user_form|crispy }}
+              </fieldset>
+              <div>
+                <button class="btn btn-outline-info" type="submit">Update</button>
+              </div>
+            </form>
+            <form method="POST" enctype="multipart/form-data" action="" style="padding: 4%">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="update-profile">
+              <fieldset>
+                <legend class="border-bottom mb-4">Profile info!</legend>
                   {{ profile_form|crispy }}
               </fieldset>
-              <div class="form-group">
+              <div>
                 <button class="btn btn-outline-info" type="submit">Update</button>
               </div>
             </form>

@@ -108,7 +108,25 @@
                 return data;
             }
             },
-              {title: 'Subscription Date', data: 'subscriptionDate'}
+              {title: 'Subscription Date', data: 'subscriptionDate'},
+              {title: 'All data', data: 'stockSymbol',
+                render: function (data, type, row) {
+                console.log(row.subscriptionDate);
+                console.log(row);
+                console.log(data);
+                if (row.subscriptionDate !== '') {
+                  return '<form action="/subscriptions/all-data" method="get">' +
+                          ' <button type="submit" name="get all data" value="' + data + '">get all data</button>' +
+                          ' </form>';
+                      }
+                else {
+                  return '<form action="/subscriptions/all-data" method="get">' +
+                          ' <button type="submit" name="get all data" value="' + data + '" disabled>get all data</button>' +
+                          ' </form>';
+
+                }}
+
+              }
             ],
             data: sampleData3,
             lengthChange: false,
