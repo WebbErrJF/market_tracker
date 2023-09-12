@@ -34,23 +34,7 @@
       </div>
     </div>
   {% endif %}
-
-
-  <script>
-    var p = document.querySelector('.animate'),
-      offset = 600;
-    var offsetMe = function() {
-      if (offset < 0) {
-        offset = 600;
-      }
-      p.style.strokeDashoffset = offset;
-      offset = offset - 5;
-      requestAnimationFrame(offsetMe);
-    }
-    offsetMe();
-  </script>
-
-
+  <script  src="{% static 'homepage/js/base.js' %}"></script>
   <header>
     <span id="logo">Market Tracker</span>
     <nav>

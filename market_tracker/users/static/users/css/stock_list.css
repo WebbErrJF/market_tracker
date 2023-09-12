@@ -1,0 +1,31 @@
+select {
+    margin: 10px 0 0 10px;
+}
+button {
+    margin: 10px 0 0 5px;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  grid-template-rows: 60px 1fr;
+  height: 95vh;
+}
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px 10px;
+}
+
+.item1 {
+  grid-area: 1 / 1 / span 4 / 2;
+}
+.item2 {
+  grid-area: 1 / 2 / span 2;
+}
+
+#containerexample {display: none}
+#loadercontainer{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
