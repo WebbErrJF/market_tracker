@@ -1,0 +1,147 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  grid-template-rows: 60px 1fr;
+  height: 95vh;
+}
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px 10px;
+}
+.item1 {
+  grid-area: 1 / 1 / span 4 / 2;
+}
+.item2 {
+  grid-area: 1 / 2 / span 4 / 2;
+}
+
+.list-header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  margin: 0; /
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.list-frame {
+  border: 2px solid #000;
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  border-radius: 25px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.list-frame ul li:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.list-frame ul li {
+  background-color: #fff;
+  border-bottom: 1px solid #000;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.list-frame ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-container {
+  overflow-y: auto;
+  height: 95vh;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-wrap;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  overflow: hidden;
+  max-width: 600px;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.btn-custom-gray {
+    background-color: #1B1C1D; /* Szary kolor */
+    color: white;
+    border-color: #1B1C1D;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.btn-custom-gray:hover {
+    background-color: #464447; /* Nowy kolor tła po najechaniu myszką */
+    border-color: #464447; /* Nowy kolor obramowania po najechaniu myszką */
+    color: white; /* Nowy kolor tekstu po najechaniu myszką */
+}
+
+/* Niestandardowe style dla przycisków btn-outline-info */
+.btn-custom-gray-outline-info {
+    background-color: white; /* Nowy kolor tła */
+    border-color:  #1B1C1D; /* Nowy kolor obramowania */
+    color:  #1B1C1D; /* Nowy kolor tekstu */
+}
+
+/* Niestandardowe style dla hover (po najechaniu myszką) */
+.btn-custom-gray-outline-info:hover {
+    background-color:  #464447; /* Kolor tła po najechaniu myszką */
+    border-color:  #464447; /* Kolor obramowania po najechaniu myszką */
+    color: white; /* Kolor tekstu po najechaniu myszką */
+}
