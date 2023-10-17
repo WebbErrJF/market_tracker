@@ -1,0 +1,74 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+{% block extra_script %}
+{% csrf_token %}
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="{% static 'users/js/users.js' %}"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css'>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js'></script>
+  <script src="{% static 'blog/js/blog_loading.js' %}"></script>
+  <script src="{% static 'users/js/csco-daily-short.js' %}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'blog/css/blog.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+
+  <div class="wrapper">
+      <div class="landing">
+        <div class="grid-container">
+          <div class="item1">
+          <div class="ui visible inverted left vertical sidebar menu" style="width: 330px;">
+            <h1 style="font-family: 'Open Sans'; color: #fdad59; font-size: 30px; letter-spacing: 5px; font-weight: 300; text-align: center; margin-top: 1em">Market Tracker</h1>
+            <a class="item" href="/dashboard">
+              <i class="home icon"></i>
+              Dashboard
+            </a>
+            <a class="item" href="/stock-list">
+              <i class="block layout icon"></i>
+              Stock data list
+            </a>
+            <a class="item" href="/profile">
+              <i class="user icon"></i>
+              Profile
+            </a>
+            <a class="item">
+              <i class="comments icon"></i>
+              Private chats
+            </a>
+            <a class="item">
+              <i class="comment alternate icon"></i>
+              Blog comments
+            </a>
+            <a class="item" href="/logout">
+              <i class="sign out alternate icon"></i>
+              Logout
+            </a>
+          </div>
+          </div>
+
+
+        <div class="item2" style="overflow-y: auto;">
+         <article class="media content-section">
+<!--             <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}"/>-->
+              <div class="media-body">
+                  <div class="article-metadata">
+                      <a class="mr-2" href="#">{{ object.author }}</a>
+                      <small class="text-muted">{{ object.date_posted }}</small>
+                  </div>
+                  <h2><a class="article-title" href="#">{{ object.title }}</a></h2>
+                  <p class="article-content">{{ object.content }}</p>
+              </div>
+          </article>
+        </div>
+        </div>
+      </div>
+  </div>
+
+{% endblock %}
