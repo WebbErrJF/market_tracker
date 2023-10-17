@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'api_fetcher.apps.ApiFetcherConfig',
     'private_chat.apps.PrivateChatConfig',
     'homepage.apps.HomepageConfig',
+    'blog.apps.BlogConfig',
     'crispy_bootstrap4',
     'rest_framework',
     'channels'
