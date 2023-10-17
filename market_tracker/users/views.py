@@ -16,6 +16,7 @@ from django.utils import timezone, dateformat
 from django.views import View
 from datetime import datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 
 
 class RegisterView(FormView):
@@ -132,8 +133,11 @@ class GetAllStockCompanies(APIView):
                                     'display': self.__post_display_company}
         super().__init__()
 
-    def get(self, request, param):
-        user = request.user
+    def get(self, request, param, *args, **kwargs):
+        if 'user_id' in kwargs.keys():
+            user = User.objects.get(id=kwargs['user_id'])
+        else:
+            user = request.user
         company_symbol = request.GET.get('get all data')
         response = self._get_decision_dict[param](user, company_symbol)
         return response
@@ -236,3 +240,15 @@ class GetAllStockCompanies(APIView):
         subscribed_company_actual.dashboard_number = dashboard_number
         subscribed_company_actual.save()
         return Response({'message': 'Post successfully'}, status=status.HTTP_201_CREATED)
+
+
+class DisplayProfile(View):
+    template_name = 'users/display_profile.html'
+
+    def get(self, request, *args, **kwargs):
+        passed_user = User.objects.get(id=kwargs['user_id'])
+        context = {'username': passed_user.username,
+                   'profile_description': passed_user.profile.description,
+                   'user_id': kwargs['user_id'],
+                   'profile_img': passed_user.profile.image.url}
+        return render(request, self.template_name, context)

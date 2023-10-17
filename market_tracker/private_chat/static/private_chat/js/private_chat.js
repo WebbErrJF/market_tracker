@@ -1,9 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
         const logged_user = JSON.parse(document.getElementById('user').textContent);
         const contactItems_1 = document.querySelectorAll('#contacts li');
-        let otherUserId = contactItems_1[0].id;
+        const passed_user = JSON.parse(document.getElementById('passed_user').textContent);
         const otherUserIdPlaceholder = document.getElementById('otherUserIdPlaceholder');
-        otherUserIdPlaceholder.textContent = contactItems_1[0].textContent;
+        if (passed_user ) {
+            otherUserId = passed_user;
+            contactItems_1.forEach(contactItem => {
+                if (otherUserId.toString() === contactItem.id) {
+                    otherUserIdPlaceholder.textContent = contactItem.textContent;
+                }
+            })
+
+        }
+        else {
+            otherUserId = contactItems_1[0].id;
+            otherUserIdPlaceholder.textContent = contactItems_1[0].textContent;
+        }
         const chatSocket = new WebSocket(getWebSocketURL(otherUserId, logged_user));
         const chatList = document.querySelector('#chat');
         let contactItems = document.querySelectorAll('#contacts li');
@@ -68,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         function appendMessageToChatList(message, loggedUser, chatList) {
             const newMessage = document.createElement('li');
             const status = message.username === loggedUser ? 'blue' : 'green';
-            console.log(loggedUser)
-            console.log(message.username)
             const messageHTML = `
                 <div class="entete">
                     <h3>${message.formatted_time_stamp}</h3>

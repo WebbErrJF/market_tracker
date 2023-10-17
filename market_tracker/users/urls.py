@@ -13,5 +13,8 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('stream/', views.StreamView.as_view(), name='stream'),
     path('subscriptions/<str:param>/', views.GetAllStockCompanies.as_view(), name='get_subscriptions'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout')
+    path('subscriptions/<str:param>/<int:user_id>/', views.GetAllStockCompanies.as_view(), name='get_subscriptions'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout'),
+    path('display_profile/', views.DisplayProfile.as_view(), name='display_profile'),
+    path('display_profile/<int:user_id>/', views.DisplayProfile.as_view(), name='display_profile')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

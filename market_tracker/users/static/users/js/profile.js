@@ -35,15 +35,24 @@ async function addOptions() {
     dashboardNumber.push(number)
   })
 
+  for (var k = 0; k < selectElements.length; k++) {
+      if (selectElements[k]) {
+          selectElements[k].innerHTML = "";
+      }
+  }
+
   for (var i = 0; i < selectElements.length; i++) {
     for (var j = 0; j < optionValues.length; j++) {
       var option = document.createElement("option");
-      option.value = optionValues[j];
-      option.text = optionTexts[j];
-      if (i+1 === dashboardNumber[j]) {
-        option.selected = true;
-      }
-      selectElements[i].add(option);
+      if (dashboardNumber[j] === 0 || dashboardNumber[j] === i+1){
+          option.value = optionValues[j];
+          option.text = optionTexts[j];
+          if (i+1 === dashboardNumber[j]) {
+            option.selected = true;
+          }
+          selectElements[i].add(option);
+        }
+
     }
   }
 }
@@ -62,8 +71,10 @@ addOptions()
                             dashboard_number: dashboard_number
                            }),
     });
+
     if (response.ok) {
             console.log('Post successfully');
+            addOptions()
         } else {
             console.error('Error changing subscription');
         }
