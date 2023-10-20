@@ -8,3 +8,11 @@ class HomepageView(View):
     def get(self, request, *args, **kwargs):
         context = {'title': 'Home'}
         return render(request, self.template_name, context)
+
+
+class AboutView(View):
+    template_name = 'homepage/about.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'title': 'About'}
+        return render(request, self.template_name, context)
