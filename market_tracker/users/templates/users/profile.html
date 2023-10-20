@@ -48,7 +48,7 @@
           <div class="item1">
           <div class="ui visible inverted left vertical sidebar menu" style="width: 330px;">
             <h1 style="font-family: 'Open Sans'; color: #fdad59; font-size: 30px; letter-spacing: 5px; font-weight: 300; text-align: center; margin-top: 1em">Market Tracker</h1>
-            <a class="item" href="/dashboard">
+           <a class="item" href="/dashboard">
               <i class="home icon"></i>
               Dashboard
             </a>
@@ -56,18 +56,24 @@
               <i class="block layout icon"></i>
               Stock data list
             </a>
-            <a class="item">
+            <a class="item" href="/profile">
               <i class="user icon"></i>
               Profile
             </a>
-            <a class="item">
+            <a class="item" href="/chat">
               <i class="comments icon"></i>
               Private chats
             </a>
-            <a class="item">
+            <a class="item" href="/blog">
               <i class="comment alternate icon"></i>
-              Blog comments
+              Blog
             </a>
+            {% if user.is_authenticated and user.is_staff %}
+            <a class="item" href="/article/new">
+              <i class="plus icon"></i>
+              Add blog article
+            </a>
+            {% endif %}
             <a class="item" href="/logout">
               <i class="sign out alternate icon"></i>
               Logout
@@ -99,7 +105,7 @@
                   {{ user_form|crispy }}
               </fieldset>
               <div>
-                <button class="btn btn-outline-info" type="submit">Update</button>
+                <button class="btn btn-custom-gray-outline-info" type="submit">Update</button>
               </div>
             </form>
             <form method="POST" enctype="multipart/form-data" action="" style="padding: 4%">
@@ -110,7 +116,7 @@
                   {{ profile_form|crispy }}
               </fieldset>
               <div>
-                <button class="btn btn-outline-info" type="submit">Update</button>
+                <button class="btn btn-custom-gray-outline-info" type="submit">Update</button>
               </div>
             </form>
 

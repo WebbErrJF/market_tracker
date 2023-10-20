@@ -2,27 +2,23 @@
 {% load static %}
 {% block extra_script %}
 {% csrf_token %}
+{% load crispy_forms_tags %}
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="{% static 'users/js/users.js' %}"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css'>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js'></script>
-  <script src="{% static 'private_chat/js/chat_loading.js' %}"></script>
+  <script src="{% static 'blog/js/blog_loading.js' %}"></script>
   <script src="{% static 'users/js/csco-daily-short.js' %}"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="{% static 'private_chat/css/private_chat.css' %}">
-  <script src="{% static 'private_chat/js/private_chat.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'blog/css/article_form.css' %}">
 
 {% endblock %}
 
 {% block content %}
-
-
-{{ logged_user|json_script:"logged_user" }}
-{{ passed_user|json_script:"passed_user" }}
 
   <div class="wrapper">
       <div class="landing">
@@ -51,10 +47,10 @@
               Blog
             </a>
             {% if user.is_authenticated and user.is_staff %}
-              <a class="item" href="/article/new">
-                <i class="plus icon"></i>
-                Add blog article
-              </a>
+            <a class="item" href="/article/new">
+              <i class="plus icon"></i>
+              Add blog article
+            </a>
             {% endif %}
             <a class="item" href="/logout">
               <i class="sign out alternate icon"></i>
@@ -64,32 +60,24 @@
           </div>
 
 
-        <div class="item2">
-          <div class="chat-display-window">
-            <h2 class="list-header">Chat with <span id="otherUserIdPlaceholder"></span></h2>
-          <ul id="chat">
-          </ul>
-        </div>
-          <div class="chat-input-window">
-              <textarea id="chat-message-input" placeholder="Type your message" style="border-radius: 25px; width: 100%; height: 20vh; padding-left: 20px; border: 2px solid #000;"></textarea>
-            <button id="chat-message-submit" style="float: right; margin-top: 10px; width: 100px; height: 50px; border-radius: 25px; background: white;">SEND</button>
-          </div>
-          </div>
-
-        <div class="item3">
-          <div class="list-frame" style="margin-right: 20px">
-            <h2 class="list-header">Last messages</h2>
-            <div class="list-container">
-              <ul id="contacts">
-                {% for contact in contacts %}
-                  <li id="{{ contact.1 }}">{{ contact.0 }}</li>
-                {% endfor %}
-              </ul>
+        <div class="item2" style="overflow-y: auto;">
+            <div class="content-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">New Article</legend>
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn-custom-gray-outline-info" type="submit">Post</button>
+                    </div>
+                </form>
             </div>
-          </div>
-          </div>
+
+        </div>
         </div>
       </div>
   </div>
+
 
 {% endblock %}

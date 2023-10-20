@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.views import View
 from .models import UserContact
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class Chat(View):
+class Chat(LoginRequiredMixin, View):
     template_name = "private_chat/chat.html"
 
     def get(self, request, *args, **kwargs):
@@ -23,11 +24,11 @@ class Chat(View):
                 UserContact.objects.create(user=request.user, contact=contact_obj)
                 user_contacts.append((contact_obj.username, contact_obj.id))
 
-            context = {'user': user,
+            context = {'logged_user': user,
                        'contacts': user_contacts,
                        'passed_user': kwargs['passed_user_id']}
         else:
-            context = {'user': user,
+            context = {'logged_user': user,
                        'contacts': user_contacts,
                        'passed_user': ''}
         return render(request, self.template_name, context)

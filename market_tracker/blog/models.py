@@ -16,3 +16,10 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)
+    content = models.TextField()
+    article_id = models.ForeignKey(Article, on_delete=models.CASCADE)

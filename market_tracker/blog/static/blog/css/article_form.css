@@ -1,0 +1,56 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  grid-template-rows: 60px 1fr;
+  height: 95vh;
+}
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px 10px;
+}
+.item1 {
+  grid-area: 1 / 1 / span 4 / 2;
+}
+.item2 {
+  grid-area: 1 / 2 / span 4 / 2;
+  display: grid;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.btn-custom-gray-outline-info {
+    background-color: white; /* Nowy kolor tła */
+    border-color:  #1B1C1D; /* Nowy kolor obramowania */
+    color:  #1B1C1D; /* Nowy kolor tekstu */
+    height: 60px;
+    width: 80px;
+    border-radius: 25px;
+}
+
+/* Niestandardowe style dla hover (po najechaniu myszką) */
+.btn-custom-gray-outline-info:hover {
+    background-color:  #464447; /* Kolor tła po najechaniu myszką */
+    border-color:  #464447; /* Kolor obramowania po najechaniu myszką */
+    color: white; /* Kolor tekstu po najechaniu myszką */
+}
+
+.btn-custom-outline-secondary {
+    background-color: white; /* Nowy kolor tła */
+    border-color:  #1B1C1D; /* Nowy kolor obramowania */
+    color:  #1B1C1D; /* Nowy kolor tekstu */
+    height: 60px;
+    width: 80px;
+    border-radius: 25px;
+}
+
+.btn-custom-outline-secondary:hover {
+    background-color:  #464447; /* Kolor tła po najechaniu myszką */
+    border-color:  #464447; /* Kolor obramowania po najechaniu myszką */
+    color: white; /* Kolor tekstu po najechaniu myszką */
+}

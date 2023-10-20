@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-        const logged_user = JSON.parse(document.getElementById('user').textContent);
+        const logged_user = JSON.parse(document.getElementById('logged_user').textContent);
         const contactItems_1 = document.querySelectorAll('#contacts li');
         const passed_user = JSON.parse(document.getElementById('passed_user').textContent);
         const otherUserIdPlaceholder = document.getElementById('otherUserIdPlaceholder');

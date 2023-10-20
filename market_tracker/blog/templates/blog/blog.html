@@ -19,7 +19,6 @@
 
 {% block content %}
 
-
   <div class="wrapper">
       <div class="landing">
         <div class="grid-container">
@@ -38,14 +37,20 @@
               <i class="user icon"></i>
               Profile
             </a>
-            <a class="item">
+            <a class="item" href="/chat">
               <i class="comments icon"></i>
               Private chats
             </a>
-            <a class="item">
+            <a class="item" href="/blog">
               <i class="comment alternate icon"></i>
-              Blog comments
+              Blog
             </a>
+            {% if user.is_authenticated and user.is_staff %}
+            <a class="item" href="/article/new">
+              <i class="plus icon"></i>
+              Add blog article
+            </a>
+            {% endif %}
             <a class="item" href="/logout">
               <i class="sign out alternate icon"></i>
               Logout
@@ -53,14 +58,13 @@
           </div>
           </div>
 
-
         <div class="item2" style="overflow-y: auto;">
           {% for post in posts %}
            <article class="media content-section">
-<!--               <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"/>-->
+               <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"/>
                 <div class="media-body">
                     <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ post.author }}</a>
+                        <a class="mr-2">{{ post.author }}</a>
                         <small class="text-muted">{{ post.date_posted }}</small>
                     </div>
                     <h2><a class="article-title" href="{% url 'article-detail' post.id %}">{{ post.title }}</a></h2>
