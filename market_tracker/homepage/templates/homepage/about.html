@@ -1,0 +1,63 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block extra_script %}
+
+  <script  src="{% static 'homepage/js/about.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'homepage/css/about.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="wrapper">
+    <div class="landing"></div>
+  </div>
+
+  <div class="text-content">
+    <h1>Market Tracker - Stay Informed About the Stock Market!</h1>
+    <p>
+      Market Tracker is a dynamic platform that allows you to stay updated on the latest events in the world of stock
+      markets and investments. Our website offers many exciting features that will keep you in the know about the world
+      of finance.
+    </p>
+    <h2>
+      Key Features:
+    </h2>
+
+    <ul>
+      <li>
+        <strong>Tracking Stock Market:</strong> With our platform, you can keep up to date with stock market quotes from around the world.
+        You can customize your favorite stocks and indices to stay updated on market events.
+      </li>
+       <li>
+        <strong>Expert Blog Posts:</strong> Our community of experts and administrators shares valuable knowledge in the form of articles
+        on our blog. Learn more about investment strategies, market trends, and various other topics.
+       </li>
+       <li>
+        <strong>Comments Section:</strong> Sharing knowledge increases its value. In the comments section, you can share your knowledge,
+        comment on articles, and engage in discussions with other users. It's the perfect place for information and
+        experience exchange.
+       </li>
+       <li>
+        <strong>Private Messages:</strong> We provide private messaging to enable users to communicate directly. You can make contacts,
+        ask questions, and share ideas in a private environment.
+       </li>
+       <li>
+        <strong>Profile Personalization:</strong> Your profile is your business card. You can personalize it by adding a photo and a short
+        description about yourself. This allows for better identification within the community and building connections
+        with other users.
+       </li>
+       <li>
+        <strong>Access to Historical Data:</strong> We offer historical data about stock market stocks in Excel file format. It's an
+        excellent tool for analysis and researching historical trends.
+       </li>
+    </ul>
+
+    <h2>
+      Join our community today and start tracking the market with Market Tracker!
+    </h2>
+
+  </div>
+
+{% endblock %}

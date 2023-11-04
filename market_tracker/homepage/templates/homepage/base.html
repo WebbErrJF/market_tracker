@@ -39,8 +39,7 @@
     <span id="logo">Market Tracker</span>
     <nav>
       <a href="{% url 'homepage' %}" class="{% if title == 'Home' %}color-nav-item{% endif %}">Home</a>
-      <a href="#" class="{% if title == 'Blog' %}color-nav-item{% endif %}">Blog</a>
-      <a href="#" class="{% if title == 'About' %}color-nav-item{% endif %}">About</a>
+      <a href="{% url 'about' %}" class="{% if title == 'About' %}color-nav-item{% endif %}">About</a>
       <a href="{% url 'login' %}" class="{% if title == 'Login' %}color-nav-item{% endif %}">Login</a>
       <a href="{% url 'register' %}" class="{% if title == 'Register' %}color-nav-item{% endif %}">Register</a>
     </nav>
