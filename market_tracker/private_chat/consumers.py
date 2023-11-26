@@ -11,17 +11,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.room_group_name = None
         self.logged_user = None
-        self.decision_receive_dict = {'message': self.__handel_message,
-                                      'change_contact': self.__change_contact}
+        self.decision_receive_dict = {'message': self._handel_message,
+                                      'change_contact': self._change_contact}
 
     async def connect(self):
-        self.room_group_name = self.__generate_room_name(self.scope['url_route']['kwargs']['other_user_id'])
+        self.room_group_name = self._generate_room_name(self.scope['url_route']['kwargs']['other_user_id'])
         self.logged_user = self.scope['url_route']['kwargs']['user']
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
-        await self.__send_chat_history()
+        await self._send_chat_history()
 
-    async def __send_chat_history(self):
+    async def _send_chat_history(self):
         messages = await self.get_messages()
         await self.send(text_data=json.dumps(
             {"type": "chat.history",
@@ -29,7 +29,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
              "logged_user": self.scope['user'].username
              }))
 
-    def __generate_room_name(self, other_user_id):
+    def _generate_room_name(self, other_user_id):
         self_user_id = self.scope['user'].id
         room_name = (
             f'{self_user_id}_{other_user_id}'
@@ -45,21 +45,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         await self.decision_receive_dict[text_data_json['type']](text_data_json)
 
-    async def __change_contact(self, data):
+    async def _change_contact(self, data):
         other_user_id = data["change_contact"]
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        self.room_group_name = self.__generate_room_name(other_user_id)
+        self.room_group_name = self._generate_room_name(other_user_id)
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-        await self.__send_chat_history()
+        await self._send_chat_history()
 
-    async def __handel_message(self, data):
+    async def _handel_message(self, data):
         sender_username = str(self.scope['user'])
         message = data["message"]
         date = datetime.now()
-        await self.__save_msg_to_database(message, sender_username, date)
-        await self.__send_chat_message(message, sender_username, date)
+        await self._save_msg_to_database(message, sender_username, date)
+        await self._send_chat_message(message, sender_username, date)
 
-    async def __send_chat_message(self, message, sender_username, date):
+    async def _send_chat_message(self, message, sender_username, date):
         date_to_display = date.strftime('%I:%M %p, %d-%m-%Y')
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -71,7 +71,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
              }
         )
 
-    async def __save_msg_to_database(self, message, sender_username, date):
+    async def _save_msg_to_database(self, message, sender_username, date):
         sender = await self.get_user(sender_username.replace('"', ''))
         await self.save_message(sender=sender, message=message, thread_name=self.room_group_name, date=date)
 
